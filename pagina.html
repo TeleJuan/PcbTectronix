@@ -7,64 +7,19 @@
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="utils/zipRead/dist/jszip.js"></script>
     <script src="utils/zipRead/dist/jszip.min.js"></script>
     <script src="utils/text-encoding-master/lib/encoding.js"></script>
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
-
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-
-        .row.content {
-            height: 840px;
-        }
-
-        /* Set gray background color and 100% height */
-
-        .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
-            height: 100%;
-        }
-
-        /* Set black background color, white text and some padding */
-
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-            .row.content {
-                height: auto;
-            }
-        }
-
-        .btn-group-toggle option:checked {
-            background-color: red;
-            color: red;
-        }
-    </style>
+    
 </head>
 
 <body>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src = "utils/stringManage.js"></script>
+    <!--<script src = "utils/stringManage.js"></script>-->
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -405,6 +360,11 @@
 
                             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                                 //console.log(zipEntry);
+                                zip.files(zipEntry.name).async("string")
+                                .then(function(data){
+                                	//hacer algo con data..string(?)
+                                	console.log("aqui se deberia leer algo");
+                                });
                                 console.log(zipEntry._data.compression.uncompressWorker);
                                 $fileContent.append($("<li>", {
                                     text: zipEntry.name
