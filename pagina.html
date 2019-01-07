@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>pcb maker(?)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="utils/zipRead/dist/jszip.js"></script>
+    <script src="utils/zipRead/dist/jszip.min.js"></script>
+    <script src="utils/text-encoding-master/lib/encoding.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+
+        .row.content {
+            height: 840px;
+        }
+
+        /* Set gray background color and 100% height */
+
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+            .row.content {
+                height: auto;
+            }
+        }
+
+        .btn-group-toggle option:checked {
+            background-color: red;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src = "utils/stringManage.js"></script>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Logo</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Projects</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav"></div>
+            <div class="col-sm-6 text-left">
+                <div class="upload-box">
+                    <h3>Choose the local(s) zip file(s)</h3>
+                    <p class="note">Note : your browser will process the zip file, don't choose a file too big !</p>
+                    <input type="file" id="file" name="file" multiple />
+                    <br />
+
+                    <div id="result_block" class="hidden">
+                        <h3>Content :</h3>
+                        <div id="result"></div>
+                    </div>
+                </div>
+                <div>
+                    <span>
+                        <hr>
+                    </span>
+                </div>
+                <form id="caracteristicas" method="POST">
+                    <div class="form-content">
+                        <div class="layers">
+                            <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="capas">
+                                <label>Capas
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active" onclick="order.setLayers(1)">
+                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 1
+                                </label>
+                                <label class="btn " onclick="order.setLayers(2)">
+                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 2
+                                </label>
+                                <label class="btn " onclick="order.setLayers(3)">
+                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 3
+                                </label>
+                                <label class="btn " onclick="order.setLayers(4)"> 
+                                    <input type="radio" name="numblayers" id="numblayers4" autocomplete="off"> 4
+                                </label>
+                                <label class="btn " onclick="order.setLayers(5)">
+                                    <input type="radio" name="numblayers" id="numblayers5" autocomplete="off"> 5
+                                </label>
+                                <label class="btn " onclick="order.setLayers(6)">
+                                    <input type="radio" name="numblayers" id="numblayers5" autocomplete="off"> 6
+                                </label>
+                            </div>
+                        </div>
+                        <div class="dimensiones">
+                            <div class="form-group" inputname="dimensiones">
+                                <label>Dimensiones:
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label>
+                                    <input class="btn" type="text" name="largo" value="100" maxlength="5"  onchange = "order.setDimX(this.value)" style="width:100px ">
+                                </label>
+                                <span>*</span>
+                                <input class="btn" type="text" name="ancho" value="100"  onchange = "order.setDimY(this.value)" maxlength="5" style="width:100px">
+                                <span>mm</span>
+                            </div>
+                        </div>
+                        <div class="form-group" inputname="quantity">
+                            <div class="quantity">
+                                <label for="points">Cantidad:
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <input type="number" name="points" step="5" min="0 " value="10" onmouseup="order.setQuantity(this.value)">
+                            </div>
+                        </div>
+                        <div class="grosor">
+                            <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="thickness">
+                                <label>Grosor capa
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active " onclick="order.setThickness(0.6)">
+                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 0.6mm
+                                </label>
+                                <label class="btn "onclick="order.setThickness(1)" >
+                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 1mm
+                                </label>
+                                <label class="btn " onclick="order.setThickness(1.6)">
+                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 1.6mm
+                                </label>
+                                <label class="btn " onclick="order.setThickness(2)">
+                                    <input type="radio" name="numblayers" id="numblayers4" autocomplete="off"> 2mm
+                                </label>
+                            </div>
+                        </div>
+                        <div class="color">
+                            <div class="formgroup btn-group-toggle " data-toggle="buttons" divname="adorn-color-pcb-div" inputname="adornColor">
+                                <label>Color PCB
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active" onclick="order.setColor('Verde')">
+                                    <input type="radio" name="colorlayer" id="colorlayerGreen" autocomplete="off" checked>
+                                    <i>
+                                        <b style="color:green"> &#9673 </b>
+                                    </i>Green
+                                </label>
+                                <label class="btn" onclick="order.setColor('Rojo')">
+                                    <input type="radio" name="colorlayer" id="colorlayerRed" autocomplete="off">
+                                    <i>
+                                        <b style="color:red"> &#9673 </b>
+                                    </i>Red
+                                </label>
+                                <label class="btn" onclick="order.setColor('Amarillo')">
+                                    <input type="radio" name="colorlayer" id="colorlayerYellow" autocomplete="off">
+                                    <i>
+                                        <b style="color:yellow"> &#9673 </b>
+                                    </i>Yellow
+                                </label>
+                                <label class="btn" onclick="order.setColor('Azul')">
+                                    <input type="radio" name="colorlayer" id="colorlayerBlue" autocomplete="off">
+                                    <i>
+                                        <b style="color:blue"> &#9673 </b>
+                                    </i>Blue
+                                </label>
+                                <label class="btn " onclick="order.setColor('Blanco')">
+                                    <input type="radio" name="colorlayer" id="colorlayerWhite" autocomplete="off">
+                                    <i>
+                                        <b style="color:rgb(240, 240, 240)"> &#9673 </b>
+                                    </i>White
+                                </label>
+                                <label class="btn" onclick="order.setColor('Negro')">
+                                    <input type="radio" name="colorlayer" id="colorlayerBlack" autocomplete="off">
+                                    <i>
+                                        <b style="color:black"> &#9673 </b>
+                                    </i>Black
+                                </label>
+                            </div>
+                        </div>
+                        <div class="terminacion">
+                            <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="termination">
+                                <label>Acabado superficial
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active" onclick="order.setSurface('HALS(c/plomo)')">
+                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> HALS(c/plomo)
+                                </label>
+                                <label class="btn " onclick="order.setSurface('HASL-RoHS(s/plomo)')">
+                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> HASL-RoHS(s/plomo)
+                                </label>
+                                <label class="btn " onclick="order.setSurface('ENIG-RoHS')">
+                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> ENIG-RoHS
+                                </label>
+                            </div>
+                        </div>
+                        <div class="solder-mask">
+
+                        </div>
+                        <div class="oz-Cu">
+                            <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="ozCu">
+                                <label>Onzas de Cobre
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active" onclick="order.setOz(1)">
+                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 1oz
+                                </label>
+                                <label class="btn " onclick="order.setOz(2)">
+                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 2oz
+                                </label>
+                            </div>
+                        </div>
+                        <div class="min-drill-size">
+                            <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="drillsize">
+                                <label>Tamaño minimo de agujeros
+                                    <a href="/someSite.com">
+                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                    </a>:
+                                </label>
+                                <label class="btn active" onclick="order.setDiameter(0.2)">
+                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 0.2mm
+                                </label>
+                                <label class="btn " onclick="order.setDiameter(0.25)">
+                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off">0.25mm
+                                </label>
+                                <label class="btn " onclick="order.setDiameter(0.3)">
+                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 0.3mm
+                                </label>
+                            </div>
+                        </div>
+                        <div class="trace-spacing">
+
+                        </div>
+                        <div class="holes"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4 sidenav">
+                <div class="well" style="background-color:white;text-align-last:left">
+                    <div>
+                        <h2>Detalle pedido:</h2>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row conten">
+                            <div class="col-sm-6">
+                                <ul class="description">
+                                    <li>Capas:
+                                    </li>
+                                    <li>Dimensiones:</li>
+                                    <li>Cantidad:
+                                    </li>
+                                    <li>Grosor capas:
+                                    </li>
+                                    <li>Color PCB:
+                                    </li>
+                                    <li>Acabado superficial:
+                                    </li>
+                                    <li>Onzas de Cobre :
+                                    </li>
+                                    <li>Tamaño min de agujeros: </li>
+                                    <li>
+                                        <h3>
+                                            <b>Total:</b>
+                                        </h3>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="description" style="list-style-type : none; text-align: left">
+                                    <li>
+                                        <span id="Tcapa"></span>
+                                    </li>
+                                    <li>
+                                        <span id="TDimX"></span>mm*
+                                        <span id="TDimY"></span>mm</li>
+                                    <li>
+                                        <span id="Tcantidad"></span>
+                                    </li>
+                                    <li>
+                                        <span id="Tgrosor"></span>mm
+                                    </li>
+                                    <li>
+                                        <span id="Tcolor"></span>
+                                    </li>
+                                    <li>
+                                        <span id="Tsuperficie"></span>
+                                    </li>
+                                    <li>
+                                        <span id="Toz"></span>oz
+                                    </li>
+                                    <li>
+                                        <span id="Tdiametro"></span>mm
+                                    </li>
+                                    <li>
+                                        <h3>
+                                            <b>
+                                                $<span id="Total"></span>
+                                            </b>
+                                        </h3>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="container-fluid text-center">
+            <p>Footer Text</p>
+        </footer>
+        <script src="utils/order.js"></script>
+        <script>initialize()</script>
+        <script>
+            var $result = $("#result");
+            $("#file").on("change", function (evt) {
+                // remove content
+                $result.html("");
+                // be sure to show the results
+                $("#result_block").removeClass("hidden").addClass("show");
+
+                // Closure to capture the file information.
+                function handleFile(f) {
+                    var $title = $("<h4>", {
+                        text: f.name
+                    });
+                    var $fileContent = $("<ul>");
+                    $result.append($title);
+                    $result.append($fileContent);
+
+                    var dateBefore = new Date();
+                    JSZip.loadAsync(f)                                   // 1) read the Blob
+                        .then(function (zip) {
+                            var dateAfter = new Date();
+                            $title.append($("<span>", {
+                                "class": "small",
+                                text: " (loaded in " + (dateAfter - dateBefore) + "ms)"
+                            }));
+
+                            zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
+                                //console.log(zipEntry);
+                                console.log(zipEntry._data.compression.uncompressWorker);
+                                $fileContent.append($("<li>", {
+                                    text: zipEntry.name
+
+                                }));
+                            });
+                        }, function (e) {
+                            $result.append($("<div>", {
+                                "class": "alert alert-danger",
+                                text: "Error reading " + f.name + ": " + e.message
+                            }));
+                        });
+                }
+
+                var files = evt.target.files;
+                for (var i = 0; i < files.length; i++) {
+                    handleFile(files[i]);
+                }
+            });
+        </script>
+</body>
+
+</html>

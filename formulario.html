@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head id="html-head">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Fusion PCB Manufacturing & Prototype PCB Assembly - Seeed Studio</title>
+    <meta name="keywords" content="pcb manufacturing, pcb prototype, pcb fabrication, pcb assembly">
+    <meta name="description" content="China pcb manufacturer offers PCB prototype and fabrication, PCBA service with 100% quality guarantee, quick delivery time, affordable price and best service. Get online instant quote without hidden cost now!">
+    <link rel="shortcut icon" href="https://statics3.seeedstudio.com/assets/img/common/favicon.ico">
+    <link rel="stylesheet" href="../fonts/font-awesome-4.5.0/css/font-awesome.min.css?v=4fbd15c">
+    <link rel="stylesheet" href="../css/animate.css?v=eb962b2">
+    <link rel="stylesheet" href="../css/lib/public.css?v=3d2c6d3">
+    <link rel="stylesheet" href="../css/main.css?v=b355967">
+    <link rel="stylesheet" href="../css/new_fusion.css?v=9173444">
+    <script src="https://statics3.seeedstudio.com/assets/lib/vue/vue.1.0.26.min.js"></script>
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TCF4N6" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>(function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-TCF4N6');</script>
+    <style>
+        .fusion-lang {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header" id="fusion-header"></header>
+    <section id="new-fusion" class="new-fusion com-width center clear" v-cloak>
+        <div class="left-bar fl">
+            <div class="fusion-container">
+                <div class="f13" id="fusion-pcb">
+                    <div class="fusion-part clear">
+                        <a href="#" class="switch fl">
+                            <i class="btn-radio-on"></i>
+                        </a>
+                        <i class="fusion-ico ico-stencil fl"></i>
+                        <h1 class="fl">PCB</h1>
+                    </div>
+                    <upload-box v-bind:data="pcb_upload_data"></upload-box>
+                    <div class="row pcb-material j-pcb-material">
+                        <div class="option-name">Base Material
+                            <div class="option-information fr j-help">
+                                <i class="fa fa-info-circle"></i>
+                            </div>
+                        </div>
+                        <div class="option-param">
+                            <a href="#" class="selecter j-ser selecter-on" data-val="1" @click.prevent="switchPcbType(1, 'FR-4 TG130', $event)">
+                                <i class="on j-on"></i>FR-4 TG130</a>
+                            <a href="#" class="selecter j-ser" data-val="2" @click.prevent="switchPcbType(2, 'Aluminum', $event)" :class="{'selecter-disable': isOpenBom }">
+                                <i class="on j-on"></i>Aluminum</a>
+                            <a href="#" class="selecter j-ser" data-val="3" @click.prevent="switchPcbType(3, 'Flexible Printed Circuit', $event)" :class="{'selecter-disable': isOpenBom }">
+                                <i class="on j-on"></i>Flexible Boards</a>
+                        </div>
+                        <div class="option-detail abs"> FR-4 is the most commonly used material for PCBs. One sided aluminum boards have traces on one side
+                            and bare aluminium on the other. They are good for heat dissipation. For multi-layer aluminium
+                            PCBs please use the Advanced service. Flexible Printed Circuit boards (FPC) are much thinner
+                            than FR-4 and can be bent to some extent.
+                            <a href="http://support.seeedstudio.com/knowledgebase/articles/1086097-the-material-for-pcb-aluminum-board-fpc" class="ml5 c-7ac"
+                                target="_blank">Learn More</a>
+                        </div>
+                    </div>
+                    <pcb-param v-bind:pcb-data="type_data_1"></pcb-param>
+                    <pcb-param v-bind:pcb-data="type_data_2"></pcb-param>
+                    <pcb-param v-bind:pcb-data="type_data_3"></pcb-param>
+                </div>
+                <div class="the-divider-of-legend"></div>
+                <div id="fusion-bom" :class="{'on-pitch': isOpenBom}">
+                    <div class="fusion-part clear" @click.prevent="openBom">
+                        <a href="#" class="switch fl">
+                            <i v-bind:class="{'btn-radio': !isOpenBom , 'btn-radio-on': isOpenBom }"></i>
+                        </a>
+                        <i class="fusion-ico ico-bom fl"></i>
+                        <h2 class="fl">PCB Assembly</h2>
+                        <div class="tips fl f13 c-9c">
+                            <span style="color:#ff7a41;">More than 10,000 in-stock components and FREE express shipping all over the world</span>
+                        </div>
+                        <div class="fr arr" @click.prevent="">
+                            <i class="fa" :class="{'fa-angle-down' : !isOpenBom, 'fa-angle-up': isOpenBom }"></i>
+                        </div>
+                    </div>
+                    <div class="fusion-wrap f13" :class="{'visable':!isOpenBom }">
+                        <div class="row j-bom-qty bom-qty">
+                            <span class="mr10">PCBA Qty</span>
+                            <input type="text" v-model="bomQty" :class="{'size-warn': isBomQtyWarn }" @keyup="checkBomCount" @blur="refreshBomDetail">
+                            <span class="c-f9 f12 ml10" v-show="isBomQtyWarn">The qty of PCBA should be less than the qty of PCB.</span>
+                        </div>
+                        <div class="upload-bom-wrap tc">
+                            <upload-box v-bind:data="bom_upload_data"></upload-box>
+                            <a href="/opl.html" class="opl-link" target="_blank">How to shorten the PCBA production time without paying more? Check out Seeed's 10,000+ in-stock
+                                OPL Now</a>
+                            <p class="c-3c mt0" v-show="!isBomUploaded">Please make a BOM file which follows this template so that the website can read it correctly.
+                                <a href="http://support.seeedstudio.com/knowledgebase/articles/1162186-why-the-website-cannot-recognize-my-bom-file" class="c-3c"
+                                    style="text-decoration: underline;" target="_blank">Learn More</a>
+                            </p>
+                            <table class="table c-3c table-bom" v-show="!isBomUploaded">
+                                <tr>
+                                    <td class="shadow"></td>
+                                    <td>A</td>
+                                    <td>B</td>
+                                    <td>C</td>
+                                    <td class="tc">D</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Designator</td>
+                                    <td>MPN/Seeed SKU</td>
+                                    <td>Qty</td>
+                                    <td class="tc">Link</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>C1,C2,C3,C4,C5</td>
+                                    <td>RHA0J471MCN1GS</td>
+                                    <td>5</td>
+                                    <td class="tl">https://www.digikey.com.cn/product-detail/zh/</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>A1,A4</td>
+                                    <td>RH0111-30002</td>
+                                    <td>2</td>
+                                    <td class="tl">https://statics3.seeedstudio.com/images/opl/</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>D1</td>
+                                    <td>CYBLE-014008-00</td>
+                                    <td>1</td>
+                                    <td class="tl">https://www.digikey.com.cn/product-detail/zh/</td>
+                                </tr>
+                            </table>
+                            <div class="des" v-show="!isBomUploaded">
+                                <ul class="f12 list-desc">
+                                    <li>We only recognize commas to distinguish the location.</li>
+                                    <li>The designator number should be ≤ Qty.</li>
+                                    <li>MPN is the Manufacturer Part Number, NOT Digikey or Mouser Part Number, can also write
+                                        the Seeed SKU.</li>
+                                    <li>Do not include components in the BOM that you do not need us to solder onto the boards.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear bom-test hide" id="fusion-pcba-test">
+                            <div class="clear f16">
+                                <a href="#" class="selecter j-ser" :class="{'selecter-on' :!pcba_test }" @click.prevent="pcba_test = false" style="width: 790px;">
+                                    <i class="on j-on"></i>Visual Inspection
+                                    <div class="f13">(Free for each PCBA)</div>
+                                </a>
+                            </div>
+                            <p class="f13 des" v-show="!pcba_test">After assembly, each PCBA will undergo visual inspection to gauge assembly quality, e.g. solder
+                                joints and component placement. You will receive a report detailing the results of the inspection.
+                                This service comes free with all PCBA assembled in Fusion.</p>
+                            <div class="empty-upload upload-box tc pcb-upload-box upload-box-normal" v-if="!is_login && pcba_test">
+                                <p>Please
+                                    <a href="#" class="c-009" @click.prevent="openLogin" target="_blank"> log in</a>/
+                                    <a href="register.html" class="c-009" target="_blank">create an account</a> before uploading your file. </p>
+                                <p>Functional testing is a paid service that verifies that the assembled device functions as
+                                    intended as per the design. You will be asked to supply additional documents on how the
+                                    PCBA is expected to perform.
+                                    <a class="c-7ac" target="_blank" href="http://support.seeedstudio.com/knowledgebase/articles/1196992-pcba-test-methods-and-details">More information</a>.</p>
+                            </div>
+                            <upload-box v-bind:data="bom_test_upload_data" v-if="pcba_test && is_login"></upload-box>
+                        </div>
+                        <div class="result-text pcb-help c-9c rel hide">
+                            <!-- There are more than 600 parts in Seeed's OPL. Get your PCBA 10 days faster! Download <a href="//statics3.seeedstudio.com/assets/file/fusion/Seeed_OPL_List_download-20160608.xlsx"title="Seeed's OPL"class="c-7ac">Seeed's OPL</a>. -->
+                            <!--There are more than 400 parts in Seeed's OPL. Get you PCBA 10 days faster! Download <a href="//statics3.seeedstudio.com/assets/file/fusion/Seeed_OPL_List_download-20160608.xlsx"title="Seeed's OPL"class="c-7ac">Seeed's OPL</a>.-->
+                            <div class="bom-format-tips clear">
+                                <div class="fl des">
+                                    <h3 class="f14 f-os-sb c-3c">The contents of the file must be as shown.</h3>
+                                    <ul class="f12">
+                                        <li>We only recognize commas to distinguish the designator.</li>
+                                        <li>The designator should be ≤ Qty.</li>
+                                        <li>MPN is the Manufactured Part Number, NOT Digikey or Mouser Part Numer.</li>
+                                        <li>Do not include components in the BOM that you do not need us to solder onto the boards.</li>
+                                    </ul>
+                                </div>
+                                <table class="fr table c-3c">
+                                    <tr>
+                                        <td>Designator</td>
+                                        <td>MPN/Seeed SKU</td>
+                                        <td>Qty</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C1,C2,C3,C4,C5</td>
+                                        <td>RHA0J471MCN1GS</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>A1,A4</td>
+                                        <td>318020010</td>
+                                        <td>2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>D1</td>
+                                        <td>CYBLE-014008-00</td>
+                                        <td>1</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="bom-temp-help abs j-temp-table">
+                                <table class="table temp-table">
+                                    <tr>
+                                        <td>Location</td>
+                                        <td>MPN/Seeed SKU</td>
+                                        <td>Quantity</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C1</td>
+                                        <td>302010007</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>D1,D2</td>
+                                        <td>ATMEGA168PA-MU</td>
+                                        <td>2</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="el-loading-spinner tc mb10" v-show="isBomAnalysis">
+                            <div class="el-loading-bubble bubble1"></div>
+                            <div class="el-loading-bubble bubble2"></div>
+                            <div class="el-loading-bubble bubble3"></div>
+                            <span class="ml10 c-9c">Loading</span>
+                        </div>
+                        <div class="c-9c tc mt10 mb10" v-show="isBomAnalysisError"> {{ isBomAnalysisDes }} </div>
+                        <div class="c-9c" v-if="bomResultCount != 0 && bomEnquiryCount == 0">There are {{ bomResultCount }} component(s) in your BOM</div>
+                        <div class="fusion-bom-list" v-show="isBomUploaded">
+                            <div class="title clear">
+                                <span class="c-9c fl" v-if="bomEnquiryCount != 0">There are {{ bomResultCount+bomEnquiryCount }} component(s) in your BOM, while there are
+                                    {{ bomEnquiryCount }} Manufacturer Part Numbers (MPN) that could not be matched by our
+                                    system. Please provide product description links for the unmatched parts and add the
+                                    order to your shopping cart. We will check the data manually and update the quotation
+                                    within one working day. </span>
+                            </div>
+                        </div>
+                        <table class="table custom-table" v-if="bomEnquiryCount != 0">
+                            <tr>
+                                <th style="width:30px;">&nbsp;</th>
+                                <th style="width:140px;">Designator</th>
+                                <th style="width: 190px;">MPN</th>
+                                <th>Quantity</th>
+                                <th style="width:443px;">Purchase Link</th>
+                            </tr>
+                            <tr v-for="item in bomEnquiryResult" class="j-noitem-comp">
+                                <td>
+                                    <input type="checkbox" class="j-set-comp-link" data-flag="{{item.flag}}" :checked="true" disabled>
+                                </td>
+                                <td>{{ item.designator }}</td>
+                                <td>{{ item.mpn }}</td>
+                                <td>{{ item.qty == 0 ? 0 : item.qty }} * {{ bomQty }}</td>
+                                <td>
+                                    <input type="text" placeholder="Please fill in the purchase link to help source" class="j-comp-link" value="{{ item.product_url }}">
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table custom-table provide-table" v-if="bomProvideCount != 0">
+                            <tr>
+                                <th style="width:90px;">Component provider</th>
+                                <th style="width: 100px;">Designator</th>
+                                <th style="width: 110px;">ManufacturePart Number</th>
+                                <th style="width: 90px;">Seeed SKU</th>
+                                <th style="width: 180px;">Description</th>
+                                <th style="width: 70px;">Quantity</th>
+                                <th style="width:70px;">Waste quantity</th>
+                                <th style="width: 70px;">Waste material</th>
+                                <th>Quanity required</th>
+                            </tr>
+                            <tr v-for="item in bomProvideResult">
+                                <td class="tc">Customer</td>
+                                <td>{{ item.designator }}</td>
+                                <td>{{ item.mpn }}</td>
+                                <td>{{ item.sku }}</td>
+                                <td>{{ item.description }}</td>
+                                <td class="tc">{{ item.qty }}</td>
+                                <td class="tc">{{ item.waste_qty }}</td>
+                                <td class="tc">{{ item.waste_qty*1 + item.need_qty*1 }}</td>
+                            </tr>
+                        </table>
+                        <table class="table full-table" v-if="isBomUploaded">
+                            <tr v-if="bomResultCount != 0">
+                                <th style="width:30px;">&nbsp;</th>
+                                <th style="width:87px;">Designator</th>
+                                <th style="width: 130px;">MPN</th>
+                                <th style="width:84px;">SeeedSKU</th>
+                                <th style="width:208px;">Description</th>
+                                <th style="width:70px;">Quantity</th>
+                                <th style="width:70px;">Waste quantity</th>
+                                <th style="width:80px;">Unit Price</th>
+                                <th style="width:74px;">Amount</th>
+                                <th style="width:100px;">Lead time</th>
+                            </tr>
+                            <tr v-for="item in bomMultiResult" v-if="bomMultiResult.length > 0" class="j-comp-tr" data-select-id="">
+                                <td>
+                                    <input type="checkbox" class="j-comp-check" :class="[ item.select_id == '0' ? '' : 'j-bom-used']" data-mpn="{{ item.mpn }}"
+                                        :checked="item.select_id != '0'" data-use="{{ item.select_id == '' ? 'no' : item.select_id }}">
+                                </td>
+                                <td colspan="9" class="meta-list j-meta-list">
+                                    <table class="query-param">
+                                        <tr>
+                                            <td style="width: 71px;"> {{ item.designator }} </td>
+                                            <td style="width: 87px;" class="j-s-mpn"> {{ item.mpn }} </td>
+                                            <td style="width: 67px;" class="j-s-sku">/</td>
+                                            <td style="width: 154px;">
+                                                <span class="j-s-dis">/</span>
+                                                <div class="arr j-list-arr">
+                                                    <i class="fa fa-angle-up"></i>
+                                                </div>
+                                            </td>
+                                            <td style="width: 55px;" class="j-s-qty" data-val="{{ item.qty }}"> {{ item.qty }} * {{ bomQty }}</td>
+                                            <td style="width: 54px;" class="j-s-wq" data-val="{{ item.waste_qty}}"></td>
+                                            <td style="width: 54px;" class="j-s-uprice">/</td>
+                                            <td style="width: 56px;" class="j-s-allprice j-all-price"></td>
+                                            <td class="j-lead-time">/</td>
+                                        </tr>
+                                    </table>
+                                    <table class="alternative-bom-list">
+                                        <tr>
+                                            <th style="width:211px;">MPN</th>
+                                            <th style="width:275px;">Description</th>
+                                            <th style="width:70px;">Unit Price</th>
+                                            <th style="width:80px;">Amount</th>
+                                            <th>Lead time</th>
+                                            <th style="width:70px;">Actions</th>
+                                        </tr>
+                                        <tr v-for="component in item.list">
+                                            <td>{{ component.mpn }}</td>
+                                            <td class="j-des"> {{ component.description }}</td>
+                                            <td>{{ component.unit_price | isShowFree}}</td>
+                                            <td>{{ component.unit_price*item.query.qty | isShowFree}}</td>
+                                            <td>{{ component.lead_time }}</td>
+                                            <td>
+                                                <a href="#" class="fusion-btn-green user-meta center tc j-set-comp" data-com-id="{{component.id}}" data-mpn="{{item.mpn}}"
+                                                    data-description="{{ component.description}}" data-sku="{{component.sku}}"
+                                                    data-unit-price="{{ component.unit_price}}" data-qty="{{ item.qty }}" data-wq="{{ component.waste_qty}}"
+                                                    data-time="{{ component.lead_time }}">use</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr v-for="item in bomOplResult">
+                                <td>
+                                    <input type="checkbox" class="j-comp-check" checked data-mpn="{{ item.mpn}}">
+                                </td>
+                                <td>{{ item.designator }}</td>
+                                <td>{{ item.mpn}}</td>
+                                <td>{{ item.sku }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.qty}} * {{ bomQty }}</td>
+                                <td>{{ item.waste_qty }}</td>
+                                <td>{{ item.unit_price | isShowFree }}</td>
+                                <td>{{ item.unit_price * item.qty * bomQty + item.waste_qty * item.unit_price | formatNumberFixed
+                                    4 | isShowFree}}</td>
+                                <td>{{ item.lead_time }}</td>
+                            </tr>
+                            <tr v-for="item in bomNotOplResult">
+                                <td>
+                                    <input type="checkbox" class="j-comp-check" checked data-mpn="{{ item.mpn}}">
+                                </td>
+                                <td>{{ item.designator }}</td>
+                                <td>{{ item.mpn}}</td>
+                                <td>{{ item.sku }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.qty}} * {{ bomQty }}</td>
+                                <td>{{ item.waste_qty }}</td>
+                                <td>{{ item.unit_price | isShowFree }}</td>
+                                <td>{{ item.unit_price * item.qty * bomQty + item.waste_qty * item.unit_price | formatNumberFixed
+                                    4 | isShowFree}}</td>
+                                <td>{{ item.lead_time }}</td>
+                            </tr>
+                            <tr v-for="item in bomOfferPrice">
+                                <td>
+                                    <input type="checkbox" class="j-comp-check" checked data-mpn="{{ item.mpn}}">
+                                </td>
+                                <td>{{ item.designator }}</td>
+                                <td>{{ item.mpn}}</td>
+                                <td>{{ item.sku }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.qty}} * {{ bomQty }}</td>
+                                <td>{{ item.waste_qty }}</td>
+                                <td>{{ item.unit_price | isShowFree }}</td>
+                                <td>{{ item.unit_price * item.qty * bomQty + item.waste_qty * item.unit_price | formatNumberFixed
+                                    4 | isShowFree}}</td>
+                                <td>{{ item.lead_time }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="fusion-stencil" :class="{'on-pitch' : isOpenStencil}">
+                    <div class="fusion-part clear" @click.prevent="openStencil">
+                        <div class="switch fl">
+                            <i v-bind:class="{'btn-radio': !isOpenStencil , 'btn-radio-on': isOpenStencil }"></i>
+                        </div>
+                        <i class="fusion-ico ico-stencil fl"></i>
+                        <h2 class="fl">SMT Stencil</h2>
+                        <div class="tips fl f13 c-9c"></div>
+                        <div class="fr arr" @click.prevent="">
+                            <i class="fa" :class="{'fa-angle-down' : !isOpenStencil, 'fa-angle-up': isOpenStencil }"></i>
+                        </div>
+                    </div>
+                    <div class="fusion-wrap f13" :class="{'visable':!isOpenStencil }">
+                        <stencil-param :uploaddata="stencil_upload_data"></stencil-param>
+                    </div>
+                </div>
+                <div class="pcb-help f13 c-9c">
+                    <p> Can't find what you are looking for? Try the
+                        <a href="https://www.seeedstudio.com/fusion-advanced-pcb.html" class="c-7ac">Fusion Advanced PCB service</a> or send us a message at
+                        <a href="mailto:pcb@seeed.cc" class="c-7ac">pcb@seeed.cc</a> and we will aim to reply within one working day. Please do not leave special requirements
+                        on the order form. This is for logistics purposes only and will be ignored during the production
+                        stage. </p>
+                    <p> To save on disappointment, please double check your design files for errors in our Online Gerber Viewer
+                        or otherwise. We will not be held responsible for errors in the files. Visit the
+                        <a href="http://support.seeedstudio.com/knowledgebase/topics/129310-fusion-ordering-faq" class="c-7ac" target="_blank">Fusion FAQ</a> for our specification, guides, tips and tricks and important design considerations.
+                    </p>
+                    <p> Seeed Fusion's privacy policy protects your data. We will not disclose your personal information or fabrication
+                        data with external parties for any purpose other than for the manufacture of your goods. You are
+                        of course, welcome to share your designs with the open community in the
+                        <a href="https://www.seeedstudio.com/gallery-index.html" class="c-7ac" target="_blank">Fusion Gallery</a>. There, anyone can download your design, modify or manufacture them for their
+                        own purposes. </p>
+                </div>
+            </div>
+            <div class="seo-banner rel"> Fusion offers one stop prototyping services for PCB (Printed Circuit Board), PCBA (PCB Assembly) and other electronic
+                and mechanical customized services such as CNC milling, 3D printing and PCB layout services. Seeed Fusion
+                promises mature PCB manufacturing and fabrication with low costs, quick build time and 100% quality guaranteed.
+                We are a Chinese manufacturer trusted by millions of electronic engineers, hobbyist and makers around the
+                world. And here's why:
+                <div class="line line-1">Instant Online Quote without hidden costs</div>
+                <div class="line line-2">Quick Turnaround from 24 hours build time</div>
+                <div class="line line-3">Over 10 years Industrial Expertise</div>
+                <div class="line line-4">Professional and Considerate technical support</div>
+            </div>
+        </div>
+        <div class="right-bar fr fusion-price f13" v-cloak>
+            <div class="title">
+                <h2 class="fl">PCB Cost</h2>
+                <div class="fr">{{ pcbOrgPriceByCurr | formatCurrency}}</div>
+            </div>
+            <ul class="price-list">
+                <li>
+                    <span class="lable">Base Material</span>
+                    <span class="value j-material-name">FR-4 TG130</span>
+                </li>
+                <li>
+                    <span class="lable">No. of Layers</span>
+                    <span class="value">{{user_chose_data_temp.pcb_layer.name}}</span>
+                </li>pcb_layer
+                <li>
+                    <span class="lable">PCB Dimensions</span>
+                    <span class="value">{{user_chose_data_temp.pcb_dimension_h.value | fixed2}}mm * {{user_chose_data_temp.pcb_dimension_w.value}}mm</span>
+                </li>
+                <li>
+                    <span class="lable">PCB Quantity</span>
+                    <span class="value">{{user_chose_data_temp.pcb_qty.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">No. of Different Designs</span>
+                    <span class="value">{{user_chose_data_temp.pcb_panelized.value}}</span>
+                </li>
+                <li>
+                    <span class="lable">PCB Thickness</span>
+                    <span class="value">{{user_chose_data_temp.pcb_thickness.name}}mm</span>
+                </li>
+                <li>
+                    <span class="lable">PCB Color</span>
+                    <span class="value">{{user_chose_data_temp.pcb_color.name }}</span>
+                </li>
+                <li>
+                    <span class="lable">Surface Finish</span>
+                    <span class="value">{{user_chose_data_temp.pcb_surface.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Minimum Solder Mask Dam</span>
+                    <span class="value">{{user_chose_data_temp.pcb_min_solder_mask_dam.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Copper Weight</span>
+                    <span class="value">{{user_chose_data_temp.pcb_copper.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Minimum Drill Hole Size</span>
+                    <span class="value j-min-hole">{{user_chose_data_temp.pcb_min_hole.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Trace Width / Spacing</span>
+                    <span class="value j-min-tr">{{user_chose_data_temp.pcb_min_tracking_spacing.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Blind or Buried Vias</span>
+                    <span class="value j-min-tr">{{user_chose_data_temp.pcb_blind_vias.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Plated Half-holes / Castellated Holes</span>
+                    <span class="value j-min-tr">{{user_chose_data_temp.pcb_half_hole.name}}</span>
+                </li>
+                <li>
+                    <span class="lable">Impedance Control</span>
+                    <span class="value j-min-tr">{{user_chose_data_temp.pcb_impedance.name}}</span>
+                </li>
+            </ul>
+            <div class="pcba-cost" v-show="isOpenBom">
+                <div class="title">
+                    <h2 class="fl">PCBA Cost</h2>
+                    <div class="fr">{{ BOMTotalPriceByCurr | formatCurrency}}</div>
+                </div>
+                <ul class="price-list">
+                    <li class="rel row">
+                        <span class="lable">Setup Cost</span>
+                        <div class="option-information fl j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="option-detail abs" style="display: none;"> Base fee for PCBA set up. </div>
+                        <span class="value">{{ BOMsetupCostByCurr | formatCurrency}}</span>
+                    </li>
+                    <li class="rel row">
+                        <span class="lable">Consumptive Material Cost</span>
+                        <div class="option-information fl j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="option-detail abs" style="display: none;"> This includes the stencils, packaging etc. </div>
+                        <span class="value">{{ BOMconsumptiveMaterialCostByCurr | formatCurrency}}</span>
+                    </li>
+                    <li class="rel row">
+                        <span class="lable">Assembly Cost</span>
+                        <div class="option-information fl j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="option-detail abs" style="display: none;"> The cost of soldering the components onto the boards. </div>
+                        <span class="value">{{ BOMassemblyCostByCurr | formatCurrency}}</span>
+                    </li>
+                    <li class="rel row">
+                        <span class="lable">Component Cost</span>
+                        <div class="option-information fl j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="option-detail abs" style="display: none;"> This is the price of your components, spare parts and the cost in procurement. </div>
+                        <span class="value">{{ BOMcomponentsCostByCurr | formatCurrency}}</span>
+                    </li>
+                    <li class="rel row">
+                        <span class="lable">Operation Fee</span>
+                        <div class="option-information fl j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="option-detail abs" style="display: none;"> This includes handling fee and sales margin, etc. </div>
+                        <span class="value">{{ BOMoperationFeePriceByCurr | formatCurrency}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="stencil-cost" v-show="isOpenStencil">
+                <div class="title">
+                    <h2 class="fl">Stencil Cost</h2>
+                    <div class="fr">{{ stencilOrgPriceByCurr | formatCurrency }}</div>
+                </div>
+                <ul class="price-list">
+                    <li>
+                        <span class="lable">PCB Dimensions</span>
+                        <span class="value">{{ stencilResult.s_dimensions_name }}</span>
+                    </li>
+                    <li>
+                        <span class="lable">Stencil Quantity</span>
+                        <span class="value">{{ stencilResult.s_qty }}</span>
+                    </li>
+                    <li>
+                        <span class="lable">Fiducial Mark</span>
+                        <span class="value">{{ stencilResult.s_fiducial.name }}</span>
+                    </li>
+                    <li>
+                        <span class="lable">Thickness</span>
+                        <span class="value">{{ stencilResult.s_thickness.name }}mm</span>
+                    </li>
+                    <li>
+                        <span class="lable">Polishing Techniques</span>
+                        <span class="value">{{ stencilResult.s_polishing.name }}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="expedited-option rel" v-if="!isOpenBom && user_chose_data_temp.expedited_option_data.length != 1">
+                <div class="title">
+                    <h2 class="fl">Expedited Cost</h2>
+                </div>
+                <div class="abs row">
+                    <div class="option-information fr j-help abs">
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                    <div class="option-detail abs">This is a rush order option, which for speeding up the PCB production time.</div>
+                </div>
+                <ul class="price-list">
+                    <li v-for="item in user_chose_data_temp.expedited_option_data" @click="chooseExpedited(item)" class="cup">
+                        <i class="fl mr10 mt5" :class="item.value == expeditedVal ? 'btn-radio-on' : 'btn-radio'"></i>
+                        <span class="lable">{{ item.name }}</span>
+                        <span class="value" v-show="user_chose_data_temp.expedited_option_data.length != 1">{{ item.price | formatCurrency }}</span>
+                    </li>
+                </ul>
+            </div>
+            <ul class="price-list">
+                <li class="final-price">
+                    <span class="lable">Sub-Total</span>
+                    <span class="value" data-usd="{{ finalPrice }}">{{ finalPrice | formatCurrency}}
+                        <span class="org-price">{{ finalOrgPrice |formatCurrency 'original' }}</span>
+                    </span>
+                </li>
+                <li class="rel prod-time" v-show="isOpenBom || user_chose_data_temp.expedited_option_data.length == 1">
+                    <span class="lable row">Production Time
+                        <div class="option-detail abs j-on-show" style="display: none;"> Production time is the period between file confirmation to packing. Another day is required for dispatch.
+                            File review and subsequent delays caused by problems in the files is not included.
+                            <a href="http://support.seeedstudio.com/knowledgebase/articles/925059-what-is-the-lead-time-for-pcb-pcba-order" class="ml5 c-7ac"
+                                target="_blank">Learn More</a>
+                        </div>
+                    </span>
+                    <div class="option-information fl j-help" data-type="price-list">
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                    <span class="value">{{ finalBuildTime }} Working Days</span>
+                </li>
+                <li>
+                    <span class="lable">Weight</span>
+                    <span class="value">{{ finalWeight }}kg</span>
+                </li>
+                <li>
+                    <span class="lable">Shipping</span>
+                    <span class="value">Calculated at Checkout</span>
+                </li>
+                <li v-if="xmas2017.state">
+                    <div class="xmas-event-2017 mt10 mb10">
+                        <ul class="coupon-list rel" v-if="xmas2017.fusionTotalOfCart == '0'">
+                            <li>$5 OFF for $50,
+                                <span class="c-f9">code: Fusion5</span>
+                            </li>
+                            <li>$15 off for $150,
+                                <span class="c-f9">code: Fusion15</span>
+                            </li>
+                            <li>$30 off for $250,
+                                <span class="c-f9">code: Fusion30</span>
+                            </li>
+                            <li>$200 off for $1500,
+                                <span class="c-f9">code: Fusion200</span>
+                            </li>
+                            <li>$2500 off for $15000,
+                                <span class="c-f9">code: Fusion2500</span>
+                            </li>
+                            <li>$5000 off for $30000,
+                                <span class="c-f9">code: Fusion5000</span>
+                            </li>
+                        </ul>
+                        <div v-else class="c-ff detail rel">
+                            <div style="color:#F5FF00; font-size:25px;">${{ xmas2017.discount }} OFF for ${{ xmas2017.borderPrice }}</div>
+                            <div class="tc mt10 mb10" style="color:#FE4803; font-size:20px; margin-left:-40px;">Code:Fusion{{xmas2017.discount }}</div>
+                            <div class="" style="font-size: 15px; line-height: 16px;">You have
+                                <span style="color:#F5FF00;">${{ xmas2017.fusionTotalOfCart | formatNumberFixed 4 }}</span>'s worth of Fusion orders in
+                                your shopping cart.
+                                <span v-if="xmas2017.currentTotal > 30000">You can enjoy a $5000 discount.</span>
+                                <span v-else>If you add another ${{ xmas2017.remainingPrice }}, you can enjoy a ${{ xmas2017.discount
+                                    }} discount.</span>
+                            </div>
+                        </div>
+                </li>
+            </ul>
+            <div class="clear">
+                <a href="#" class="fusion-btn-green j-f-add" @click.prevent="addCart">Add to Cart</a>
+            </div>
+            <div class="mt20 c-9c" style="padding: 0 20px;" v-if="bomNoItemCount != 0 && isOpenBom"> Your final payment is subject to review for the component(s) that our system cannot match. </div>
+            <div class="mt20 c-9c" style="padding: 0 20px;"></div>
+            </div>
+            <seeed-login :data="loginBoxOption"></seeed-login>
+            <pop-modal :pop-data="popData"></pop-modal>
+            <pop-full-modal :pop-data="popData"></pop-full-modal>
+            <pop-action-modal :pop-data="popData"></pop-action-modal>
+            <pop-confirm-modal :pop-data="popData"></pop-confirm-modal>
+            <pop-loading-modal :pop-data="popData"></pop-loading-modal>
+    </section>j-pcb
+    <footer class="clear" id="footer"></footer>
+    <script type="text/x-template" id="upload-box"><div class="upload-box tc pcb-upload-box":class="{'upload-box-normal': !data.is_warn, 'upload-box-warn animated flash':data.is_warn}"id="{{data.type}}_upload"><div class="rel"><div class="fusion-btn-green center cup"id="btn-upload-{{data.type}}"v-show="!isUploading">{{ data.btn_text}}</div><div class="fusion-btn-grey center cup"v-show="isUploading">{{ data.upload_text }}</div></div><div class="f13 c-9c">{{ data.file_text }}</div><div class="c-f9 f12"v-show="data.is_warn">Please upload the correct file</div><div class="uploading-bar center mt10"v-show="isUploading"><div class="uploading-progress f14"style="width: {{data.progress_ccount}}%;"><span class="mr5">{{data.progress_ccount}}%</span></div></div><div class="upload-result"v-show="isShowResult"><span class="ico-zip mr5"></span><span>{{ fileInfo.fileName }}</span><a href="#"v-bind:href="gerberViewLink"target="_blank"v-show="data.is_gerber"class="c-7ac ml10 f12">Gerber Viewer</a></div><div class="f13 c-009 gerber-tips center mt10"v-show="isGerberTips"v-html="data.tips"></div></div></script>
+    <script type="text/x-template" id="param-list">
+        <div class="param-list j-p-list pcb-type-{{pcbData.pcb_type}}">
+            <div class="row pcb-layer j-pcb-layer"><div class="option-name">No. of Layers
+                <div class="option-information fr j-help">
+                    <i class="fa fa-info-circle"></i></div>
+                </div>
+                <div class="option-param">
+                    <a href="#"class="selecter j-ser"data-val="{{ item.value }}"v-for="item in pcbData.layer":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbLayer(item)">
+                        <i class="on j-on"></i> {{ item.name }} 
+                    </a></div><div class="option-detail abs"> The number of circuit layers in your boards. If you choose 1 layer, then the non-circuit side will not be covered with solder mask. 
+                        <a href="http://support.seeedstudio.com/knowledgebase/articles/909267-what-is-the-layer"class="ml5 c-7ac"target="_blank">Learn More</a>
+                    </div>
+                </div>
+                <div class="row row-lg">
+                    <div class="option-name">PCB Dimensions
+                        <div class="option-information fr j-help">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="option-param j-pcb-{{pcbData.pcb_type}}-size">
+                                <input type="text"placeholder="length"v-model="this_pcb.pcb_dimension_h.value":class="{'size-warn': isLengthWarn}"@keyup="numberFormat"@blur="userInputAction(this_pcb.pcb_dimension_h.value, 'length')"maxlength="6">
+                                <span class="ml5 mr5">*</span>
+                                <input type="text"placeholder="width"v-model="this_pcb.pcb_dimension_w.value":class="{'size-warn': isWidthWarn}"@keyup="numberFormat"@blur="userInputAction(this_pcb.pcb_dimension_w.value, 'width')"maxlength="6">
+                                <span class="c-9c ml5">* Units in mm</span>
+                                <span class="c-7ac f12 ml10 cup"v-if="gerber_length != 0">
+                                    <span @click.prevent="setDimensionsByGerber">{{ gerber_length }} mm * {{ gerber_width }}mm</span>
+                                    <span class="gerber-size-tips-box j-gerber-size-tips rel">
+                                        <i class="fa fa-info-circle ml5"></i>
+                                        <div class="gerber-size-tips abs"> Tips: This is a testing function. This dimension is measured from your gerber files outline. You can click it to fill the dimension. If this dimension is not correct, Please fill the correct dimension manually.</div>
+                                    </span>
+                                </span>
+                                <div class="c-f9 f12"v-show="isSizeWarn">{{ sizeWarnTips }}</div>
+                            </div>
+                            <div class="option-detail abs"> The maximum length and width of your board or panel if the boards are panelised. Maximum and minimum lengths for FR-4 boards: 10 to 500mm. Aluminum boards: 10 to 450mm. Flexible boards: 10 to 230mm. 
+                                <a href="http://support.seeedstudio.com/knowledgebase/articles/1086091-the-dimension-for-pcb"class="ml5 c-7ac"target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="row row-lg">
+                            <div class="option-name">PCB Quantity<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><div @click="showPcbQtyList"style="width:58px;"class="rel"><input type="text"placeholder=""readonly value="{{this_pcb.pcb_qty.value}}"><span class="arr-block abs"><i class="fa fa-angle-down"></i></span></div><div class="pcb-qty-list clear f12 hide j-qty-list"><a href="#"class="count"v-for="item in pcbData.qty"@click.prevent="setPcbQty(item)"data-val="{{item.value}}"><span class="{{ this_pcb.pcb_qty.value == item.value ? 'btn-radio-on':'btn-radio' }}"></span>{{item.name}}</a></div></div><div class="option-detail abs"> The number of boards/panels required. If your files are of a single board then this is the number of boards. If your boards are panelised into a panel, then this is the number of panels. <a href="http://support.seeedstudio.com/knowledgebase/articles/1089904-pcb-quantity"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-panelized"><div class="option-name"><span title="Panelized PCBs">No. of Different Designs</span><div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.panelized":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPanelized(item)"><i class="on j-on"></i> {{ item.name }} </a><div class="c-7ac f12 eg rel j-eg">Example<div class="abs eg-img"><img src="https://statics3.seeedstudio.com/assets/img/fusion/pcb_panelized_2018.png"alt=""></div></div></div><div class="option-detail abs"> How many different designs in your files separated by v-cuts, stamp holes or milling slots. Please see the example. Different designs are not accepted for multi-layer boards with over 6 circuit layers. Seeed does not provide panelisation services, if you want panelised boards, please design the panelised Gerber data yourself. <a href="http://support.seeedstudio.com/knowledgebase/articles/388503-what-are-the-pcb-panelization-rules"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-thickness j-pcb-thickness"><div class="option-name">PCB Thickness<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.thickness":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setThickness(item, $event)"><i class="on j-on"></i> {{ item.name }} </a><span class="c-9c ml5">* Units in mm</span></div><div class="option-detail abs"> The final thickness of the finished PCBs. Board thickness tolerance is +/-10%. Solder mask and copper plating may make the boards slightly thicker. <a href="http://support.seeedstudio.com/knowledgebase/articles/1086106-the-thickness-of-pcb"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-color"><div class="option-name">PCB Color<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param color-list"><a href="#"class="selecter j-ser"data-val="{{ item.value }}"v-for="item in pcbData.color":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbColor(item, item.state)"><i class="on j-on"></i><i class="pcb-c-{{item.value}} color-disc"></i> {{ item.name }} </a></div><div class="option-detail abs"> The color of the solder mask applied onto the base material. For most colors, the silkscreen is printed white. Only for white solder mask, the silkscreen is printed black. No mixing of solder mask colors is allowed. Green solder mask has the best performance. <a href="http://support.seeedstudio.com/knowledgebase/articles/1086112-the-color-of-solder-mask"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-surface-finish"><div class="option-name">Surface Finish<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.surface":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbSurface(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> HASL (Hot Air Solder Level) processing applies a thin layer of solder on the pads. ENIG (Electroless Nickel/Immersion Gold) has better planarity and shelf life than HASL. It is also lead free. Hard gold is useful for gold fingers or other hard wear areas. By selecting this option, the entire board will be plated in Hard Gold. <a href="http://support.seeedstudio.com/knowledgebase/articles/1086115-the-surface-finish-for-pcb"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-surface-finish"><div class="option-name"><span class="title-block">Minimum Solder Mask Dam</span><div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.min_solder_mask_dam":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbSolderMask(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> The minimum solder mask dam between copper pads. This helps to prevent accidental solder bridging during assembly. 0.1mm can only be achieved with green solder mask. If you choose black or white, the minimum solder mask dam is 0.15mm and for other colors the minimum is 0.12mm.<a href="http://support.seeedstudio.com/knowledgebase/articles/1159990-solder-mask-dam"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-copper-weight"><div class="option-name">Copper Weight<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.copper":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbCopper(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> Copper weight on the outer layers (top and bottom). The copper weight for inner layers is fixed at 0.5oz. If you need other weights please contact us directly or use the Advanced service. <a href="http://support.seeedstudio.com/knowledgebase/articles/1086121-the-copper-weight-for-pcb"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-min-hole-size"><div class="option-name">Minimum Drill Hole Size<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.min_hole":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbMinHole(item, item.state, $event)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> The minimum drill hole size required in the PCB. Drill hole sizes under 0.3mm are much more difficult to produce. For batch production please ensure hole size is more than 0.3mm. <a href="http://support.seeedstudio.com/knowledgebase/articles/671608-what-is-the-range-for-the-drilling-hole-diameter"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-min-tracking"><div class="option-name">Trace Width / Spacing<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.min_tracking_spacing":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbMinTrackingSpacing(item, item.state, $event)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> The minimum width of the traces and the minimum space between traces in your design. If your design needs to be batch produced, please ensure that the width and spacing is greater than 6 mil. <a href="http://support.seeedstudio.com/knowledgebase/articles/892659-what-is-the-the-min-track-spacing-for-1oz-2oz-3o"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-blind-vias"><div class="option-name">Blind or Buried Vias<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.blind_vias":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbBlindVias(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> Whether or not your boards require blind or buried vias. The online quotation is for blind vias or buried vias. If your board is more complex, you may be contacted for extra charges. <a href="http://support.seeedstudio.com/knowledgebase/articles/888786-what-is-blind-buried-via"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-half-cut"><div class="option-name"><span class="title-block">Plated Half-holes / Castellated Holes</span><div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.half_hole":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbHalfHole(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> Whether or not your boards require plated half-holes/castellated holes. These are holes on the edge of the board that require copper plating. This is a specialised process, we cannot v-cut or mill plated holes. <a href="http://support.seeedstudio.com/knowledgebase/articles/910767-what-is-half-cut-castellated-holes"class="ml5 c-7ac"target="_blank">Learn More</a></div></div><div class="row pcb-impedancei-control"><div class="option-name">Impedance Control<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in pcbData.impedance":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setPcbImpedance(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> Whether or not traces on the board need to meet impedance requirements. Please include impedance documentation in your upload. For more complex requirements, we may contact you for extra fees. <a href="http://support.seeedstudio.com/knowledgebase/articles/1086124-what-is-impedance-control"class="ml5 c-7ac"target="_blank">Learn More</a></div></div></div></script>
+    <script type="text/x-template" id="stencil-param-list"><upload-box v-bind:data="uploaddata"></upload-box><div class="row row-lg"><div class="option-name">PCB Dimensions<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><select v-model="this_stencil.s_dimensions_value"class="stencil-dimensions"@change="setDimensions"><option value="{{item.value}}"v-for="item in stencilData.dimension">{{ item.name }}</option></select></div><div class="option-detail abs"> Please ensure that the effective area is larger than the PCB size. </div></div><div class="row row-lg"><div class="option-name">Stencil Quantity<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><input type="text"placeholder=""v-model="this_stencil.s_qty"@keyup="setStencilQty"@blur="getStencilPrice"></div><div class="option-detail abs">The number of stencils required. If you want a separate stencil for the top and bottom sides please upload them separately. <a href="http://support.seeedstudio.com/knowledgebase/articles/466664-fusion-pcb-stencil-specification"class="c-7ac"target="_blank">Learn more</a></div></div><div class="row pcb-surface-finish"><div class="option-name">Fiducial Mark<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in stencilData.fiducial":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setFiducialMark(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> Fiducial marks are designed to help with mechanical alignment. </div></div><div class="row pcb-surface-finish"><div class="option-name">Thickness<div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in stencilData.thickness":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setStencilThickness(item, item.state)"><i class="on j-on"></i>{{item.name}}</a><span class="c-9c ml5">* Units in mm</span></div><div class="option-detail abs"> Stencil thickness will determine the amount of solder paste applied onto the copper pads of the PCB. Thicker stencils will leave more solder paste. </div></div><div class="row pcb-surface-finish"><div class="option-name"><span class="title-block">Polishing Technique</span><div class="option-information fr j-help"><i class="fa fa-info-circle"></i></div></div><div class="option-param"><a href="#"class="selecter j-ser"data-val="{{item.value}}"v-for="item in stencilData.polishing":class="{'selecter-on': item.state == 1 , 'selecter-disable': item.state == 2}"@click.prevent="setStencilPolishing(item, item.state)"><i class="on j-on"></i>{{item.name}}</a></div><div class="option-detail abs"> BGA plating, also called electropolishing, is highly recommended for boards with BGAs as it will help the paste detach from the fine stencil apertures. </div></div></script>
+    <script type="text/x-template" id="pop-modal"><div class="popup-modal small-pop":class="{'hide': !popData.isShow, 'animated bounceInLeft': popData.isShow}"><i class="fa fa-info-circle mr10 f18"></i> {{ popData.msg }} <span v-html="popData.popHTML"></span></div></script>
+    <script type="text/x-template" id="pop-full-modal"><section class="pop-wrap"v-if="popData.isFullModalShow"><div class="popup-modal normal-pop"><div v-if="popData.fullModalResultType == 'success'"><div class="icon icon-success"><i class="fa fa-check"></i></div><div class="text">Added Successfully</div></div><div v-if="popData.fullModalResultType == 'fail'"><div class="icon icon-fail"><i class="fa fa-close"></i></div><div class="text">Added failed</div></div></div></section></script>
+    <script type="text/x-template" id="pop-action-modal"><section class="pop-wrap"v-if="popData.isActionModalShow"><div class="popup-modal action-pop"><div class="title"><div class="text">{{popData.isActionModalTitle}}</div></div><div class="content"v-html="popData.actionModalText"></div><div class="btn-group"><a href="#"class="btn fusion-btn-white mr10"@click.prevent="cancelPop">Cancel</a><a href="#"class="btn fusion-btn-green"@click.prevent="confirmPop">Confirm</a></div></div></section></script>
+    <script type="text/x-template" id="pop-confirm-modal"><section class="pop-wrap"v-if="popData.isConfirmModalShow"><div class="popup-modal action-pop"><a href=""class="btn-close j-close-layer"@click.prevent="closePop(false)"v-if="popData.isNeedCloseBtn || false"><i class="fa fa-close"></i></a><div class="title"><div class="text">{{popData.confirmModalTitle}}</div></div><div class="content"v-html="popData.confirmModalHtml"></div><div class="btn-group"><a href="#"class="btn fusion-btn-green"@click.prevent="confirmPop">{{ popData.isSetBtnText || 'Confirm' }}</a></div></div></section></script>
+    <script type="text/x-template" id="common-login"><div class="transparent-layer full-screen"id="account-action"v-if="data.isShow"><div class="account-action"><a href=""class="logo"><img src="//statics3.seeedstudio.com/assets/img/common/logo_horizontal.png"alt=""class="center"></a><a href=""class="btn-close j-close-layer"@click.prevent="closeLogin(false)"><i class="fa fa-close"></i></a><div class="account-login box j-login j-box"><h2>Welcome back to Seeed</h2><div class="row"><input type="text"class="input j-email"placeholder="Email"v-model="email"></div><div class="row"><input type="password"class="input j-psw"placeholder="Password"v-model="password"></div><a href="#"class="cbtn tc center mt20 j-do btn-green"data-type="login"@click.prevent="login">Login</a><span class="f12 abs acc-tips c-f9"v-show="isCheck">{{ tips }} </span><div class="c-82 mt30 f14"><a href="//www.seeedstudio.io/regiter.html"class="c-01 mr15"target="_blank">Create an account </a>|<a href="//www.seeedstudio.io/find_psw.html"class="c-01 ml15"target="_blank">Forgot the password?</a></div></div></div></div></script>
+    <script type="text/x-template" id="pop-loading-modal"><section class="potlayer":class="{'loading-show': popData.isLoadingShow}"><div class="potlayer__confirm tc clear f20"><i class="fa fa-spinner fa-spin mr10"></i><P class="mt10 f14">The system is now calculating the component cost. This may take a few minutes, thank you for your patience.</P></div></section></script>
+    <script src="../js/lib/jquery-1.11.3.min.js?v=895323e"></script>
+    <script src="../js/plugin/webupload/webuploader.min.js?v=46af8f9"></script>
+    <script src="../js/lib/public_module.js?v=4e58b60"></script>
+    <script src="../js/base_module.js?v=41e5bc0"></script>
+    <script src="../js/fusion_common.js?v=c67ac66"></script>
+    <script src="../js/fusion_pcb.js?v=29f3149"></script>
+    <script> var FUSION_LANG = "en"; var PCB_UPLOAD_DATA = '{"type":"PCB","btn_text":"Add Gerber Files","file_text":"Only ZIP or RAR files accepted. Maximum size 20MB.","upload_text":"Uploading your gerber file","api":"","id":"835","is_warn":false,"progress_ccount":0,"is_gerber":true,"tips":"<i class=fa fa-info-circle mr5 f18><\/i><a class=underline href=http:\/\/support.seeedstudio.com\/knowledgebase\/articles\/1176532-how-to-generate-gerber-file target=_blank >How to generate Gerber files<\/a><br>Files CANNOT be changed after order confirmation.<br>We will follow the Gerber files and order parameters directly. Please contact us first for special requirements. <br>We may need to contact you regarding your order. Please ensure you are able to access your registered e-mail address and check it regularly."}'; var BOM_UPLOAD_DATA = '{"type":"BOM","btn_text":"Add BOM File","file_text":"Only CSV, XLS or XLSX files accepted.","upload_text":"Uploading your file","api":"","id":"1511","is_warn":false,"progress_ccount":0,"is_gerber":false,"tips":"<span class=c-4a>Download BOM <\/span><a href=https:\/\/statics3.seeedstudio.com\/files\/20184\/2018.xlsx class=underline c-4a>Template<\/a>"}'; var STENCIL_UPLOAD_DATA = '{"type":"STENCIL","btn_text":"Add Gerber Files","file_text":"Only ZIP or RAR files accepted. Maximum size 20MB.","upload_text":"Uploading your file","api":"","id":"1391","is_warn":false,"progress_ccount":0,"is_gerber":false,"tips":""}'; var PAGE_KEY = 'fusion_pcb.html'; var PROJECT_TYPE = 0; var BOM_TEST_UPLOAD_DATA = '{"type":"TEST_PLAN","btn_text":"Add your Test plan","file_text":"Only accept zip or rar, Max 4 M","upload_text":"Uploading your file","api":"","id":"","is_warn":false,"progress_ccount":0,"is_gerber":false,"tips":"<p>Functional testing is a paid service that verifies that the assembled device functions as intended as per the design. You will be asked to supply additional documents on how the PCBA is expected to perform. <a class=c-7ac href=http://support.seeedstudio.com/knowledgebase/articles/1196992-pcba-test-methods-and-details>More information</a>.</p>"}'; fusion.pcb(); </script>
+</body>
+
+</html>
