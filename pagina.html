@@ -13,7 +13,7 @@
     <script src="utils/zipRead/dist/jszip.js"></script>
     <script src="utils/zipRead/dist/jszip.min.js"></script>
     <script src="utils/text-encoding-master/lib/encoding.js"></script>
-    
+
 </head>
 
 <body>
@@ -85,22 +85,22 @@
                                         <span class="glyphicon glyphicon-question-sign"></span>
                                     </a>:
                                 </label>
-                                <label class="btn active" onclick="order.setLayers(1)">
+                                <label class="btn active" id="nlayer1" onclick="order.setLayers(1)">
                                     <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 1
                                 </label>
-                                <label class="btn " onclick="order.setLayers(2)">
+                                <label class="btn " id="nlayer2" onclick="order.setLayers(2)">
                                     <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 2
                                 </label>
-                                <label class="btn " onclick="order.setLayers(3)">
+                                <label class="btn " id="nlayer3" onclick="order.setLayers(3)">
                                     <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 3
                                 </label>
-                                <label class="btn " onclick="order.setLayers(4)"> 
+                                <label class="btn " id="nlayer4" onclick="order.setLayers(4)">
                                     <input type="radio" name="numblayers" id="numblayers4" autocomplete="off"> 4
                                 </label>
-                                <label class="btn " onclick="order.setLayers(5)">
+                                <label class="btn " id="nlayer5" onclick="order.setLayers(5)">
                                     <input type="radio" name="numblayers" id="numblayers5" autocomplete="off"> 5
                                 </label>
-                                <label class="btn " onclick="order.setLayers(6)">
+                                <label class="btn " id="nlayer6" onclick="order.setLayers(6)">
                                     <input type="radio" name="numblayers" id="numblayers5" autocomplete="off"> 6
                                 </label>
                             </div>
@@ -113,10 +113,10 @@
                                     </a>:
                                 </label>
                                 <label>
-                                    <input class="btn" type="text" name="largo" value="100" maxlength="5"  onchange = "order.setDimX(this.value)" style="width:100px ">
+                                    <input class="btn" type="text" name="largo" value="100" maxlength="5" onchange="order.setDimX(this.value)" style="width:100px ">
                                 </label>
                                 <span>*</span>
-                                <input class="btn" type="text" name="ancho" value="100"  onchange = "order.setDimY(this.value)" maxlength="5" style="width:100px">
+                                <input class="btn" type="text" name="ancho" value="100" onchange="order.setDimY(this.value)" maxlength="5" style="width:100px">
                                 <span>mm</span>
                             </div>
                         </div>
@@ -138,16 +138,16 @@
                                     </a>:
                                 </label>
                                 <label class="btn active " onclick="order.setThickness(0.6)">
-                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 0.6mm
+                                    <input type="radio" name="numblayers" id="thicklayer1" autocomplete="off" checked> 0.6mm
                                 </label>
-                                <label class="btn "onclick="order.setThickness(1)" >
-                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 1mm
+                                <label class="btn " onclick="order.setThickness(1)">
+                                    <input type="radio" name="numblayers" id="thicklayer2" autocomplete="off"> 1mm
                                 </label>
                                 <label class="btn " onclick="order.setThickness(1.6)">
-                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 1.6mm
+                                    <input type="radio" name="numblayers" id="thicklayer3" autocomplete="off"> 1.6mm
                                 </label>
                                 <label class="btn " onclick="order.setThickness(2)">
-                                    <input type="radio" name="numblayers" id="numblayers4" autocomplete="off"> 2mm
+                                    <input type="radio" name="numblayers" id="thicklayer4" autocomplete="off"> 2mm
                                 </label>
                             </div>
                         </div>
@@ -204,13 +204,13 @@
                                     </a>:
                                 </label>
                                 <label class="btn active" onclick="order.setSurface('HALS(c/plomo)')">
-                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> HALS(c/plomo)
+                                    <input type="radio" name="typelayers"  autocomplete="off" checked> HALS(c/plomo)
                                 </label>
                                 <label class="btn " onclick="order.setSurface('HASL-RoHS(s/plomo)')">
-                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> HASL-RoHS(s/plomo)
+                                    <input type="radio" name="typelayers"  autocomplete="off"> HASL-RoHS(s/plomo)
                                 </label>
                                 <label class="btn " onclick="order.setSurface('ENIG-RoHS')">
-                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> ENIG-RoHS
+                                    <input type="radio" name="typelayers"  autocomplete="off"> ENIG-RoHS
                                 </label>
                             </div>
                         </div>
@@ -225,10 +225,10 @@
                                     </a>:
                                 </label>
                                 <label class="btn active" onclick="order.setOz(1)">
-                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 1oz
+                                    <input type="radio" name="numblayers" id="ozlayer1" autocomplete="off" checked> 1oz
                                 </label>
                                 <label class="btn " onclick="order.setOz(2)">
-                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off"> 2oz
+                                    <input type="radio" name="numblayers" id="ozlayer2" autocomplete="off"> 2oz
                                 </label>
                             </div>
                         </div>
@@ -240,13 +240,13 @@
                                     </a>:
                                 </label>
                                 <label class="btn active" onclick="order.setDiameter(0.2)">
-                                    <input type="radio" name="numblayers" id="numblayers1" autocomplete="off" checked> 0.2mm
+                                    <input type="radio" name="numblayers" id="thicklayers1" autocomplete="off" checked> 0.2mm
                                 </label>
                                 <label class="btn " onclick="order.setDiameter(0.25)">
-                                    <input type="radio" name="numblayers" id="numblayers2" autocomplete="off">0.25mm
+                                    <input type="radio" name="numblayers" id="thicklayers2" autocomplete="off">0.25mm
                                 </label>
                                 <label class="btn " onclick="order.setDiameter(0.3)">
-                                    <input type="radio" name="numblayers" id="numblayers3" autocomplete="off"> 0.3mm
+                                    <input type="radio" name="numblayers" id="thicklayers3" autocomplete="off"> 0.3mm
                                 </label>
                             </div>
                         </div>
@@ -316,7 +316,8 @@
                                     <li>
                                         <h3>
                                             <b>
-                                                $<span id="Total"></span>
+                                                $
+                                                <span id="Total"></span>
                                             </b>
                                         </h3>
                                     </li>
@@ -350,6 +351,7 @@
                     $result.append($fileContent);
 
                     var dateBefore = new Date();
+                    var flag = true;
                     JSZip.loadAsync(f)                                   // 1) read the Blob
                         .then(function (zip) {
                             var dateAfter = new Date();
@@ -357,15 +359,69 @@
                                 "class": "small",
                                 text: " (loaded in " + (dateAfter - dateBefore) + "ms)"
                             }));
-
+                            var capas = 0;
+                            var minX = 10000000000;
+                            var maxX = -10000000000;
+                            var minY = 10000000000;
+                            var maxY = -10000000000;
+                            var minDiametro = 10000;
+                            var dimX = 0;
+                            var dimY = 0;
+                            order.setLayers(0); 
                             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                                 //console.log(zipEntry);
-                                zip.files(zipEntry.name).async("string")
-                                .then(function(data){
-                                	//hacer algo con data..string(?)
-                                	console.log("aqui se deberia leer algo");
-                                });
-                                console.log(zipEntry._data.compression.uncompressWorker);
+                                zip.files[zipEntry.name].async("string")
+                                    .then(function (data, dimX, dimY) {
+                                        var lineas = data.split("\n");
+                                        //AQUI SE DEBERIA DETERMINAR SI ES DRILL
+                                        var tipo = "not drill";//drill o no
+                                        var comprobacion = "";
+                                        for (i = 0; i < 3; i++) {
+                                            comprobacion += lineas[0][i];
+                                        }
+                                        if (comprobacion == "M48") tipo = "drill";
+                                        //SI ES DRILL
+                                        if (tipo == "not drill") {
+                                            var lineaInteres = lineas[4].split(" ");
+                                            var descripcion = lineaInteres[2].split(",")
+                                            if (descripcion[1] == "Copper") {
+                                                order.addLayers();
+                                                //console.log("capas"+capas);
+                                                
+                                            }
+                                            else if (descripcion[1] == "Profile") {
+                                                for (j = 0; j < lineas.length; j++) {
+                                                    if (lineas[j][0] == "X") {
+                                                        var punto = lineas[j].substr(1).slice(0, -4).split("Y");
+                                                        var x = parseInt(punto[0], 10) / Math.pow(10, 6);
+                                                        var y = parseInt(punto[1], 10) / Math.pow(10, 6);
+                                                        if (x < minX) minX = x;
+                                                        else if (x > maxX) maxX = x;
+                                                        if (y < minY) minY = y;
+                                                        else if (y > maxY) maxY = y;
+
+                                                    }
+                                                }
+                                                dimX = Math.abs(maxX - minX);
+                                                dimY = Math.abs(maxY - minY);
+                                                order.setDimX(dimX);
+                                                order.setDimY(dimY);
+                                                console.log("dimensiones: " + dimY + "*" + dimX);
+                                            }
+                                        }
+                                        else if (tipo == "drill") {
+                                            length
+                                            for (j = 0; j < lineas.length; j++) {
+                                                var metr_diam = lineas[j].split("C");
+                                                if (lineas[j][0] == "T" && metr_diam.length == 2) {
+                                                    var diametro = parseFloat(metr_diam[1]);
+                                                    if (diametro < minDiametro) minDiametro = diametro;
+                                                }
+                                            }
+                                            order.changeHole(minDiametro);
+                                            console.log("diametro minimo: " + minDiametro)
+                                        }
+                                    });
                                 $fileContent.append($("<li>", {
                                     text: zipEntry.name
 
@@ -379,11 +435,13 @@
                         });
                 }
 
+                //console.log("diametro minimo: " + minDiametro);
                 var files = evt.target.files;
                 for (var i = 0; i < files.length; i++) {
                     handleFile(files[i]);
                 }
             });
+
         </script>
 </body>
 

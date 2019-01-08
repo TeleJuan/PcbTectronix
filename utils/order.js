@@ -8,8 +8,18 @@ var order = {
     surface : "HALS(c/plomo)",
     oz : 1,
     hole_diameter : 0.2,
+    aux_hole: 10,
 
+    addLayers: function(){
+        this.layers+=1;
+        
+        initialize()
+    },
+    changeHole:function(newhole){
+        if(newhole<this.aux_hole)this.setDiameter(newhole);
+    },
     setLayers: function(nLayer){
+        document.getElementById("nlayer"+this.layers).classList.remove("active")
         this.layers = nLayer,
         initialize()
     },
