@@ -1,0 +1,292 @@
+<t t-name="website.fabricacion-pcb">
+    <t t-call="website.layout">
+        <div id="wrap" class="oe_structure oe_empty" />
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-2 sidenav" />
+                <div class="col-sm-6 text-left">
+                    <div class="upload-box">
+                        <h3>Choose the local(s) zip file(s)</h3>
+                        <p class="note">Note : your browser will process the zip file, don't choose a file too big !</p>
+                        <input type="file" id="file" name="file" />
+                        <br/>
+
+                        <div id="result_block" class="hidden">
+                            <h3>Content :</h3>
+                            <div id="result" />
+                        </div>
+                    </div>
+                    <div>
+                        <span>
+                            <hr/>
+                        </span>
+                    </div>
+                    <form id="caracteristicas" method="POST">
+                        <div class="form-content">
+                            <div class="layers">
+                                <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="capas">
+                                    <label>Capas
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active" id="nlayer1" onclick="order.setLayers(1)">
+                                        <input type="radio" id="numblayers1" autocomplete="off" /> 1
+                                    </label>
+                                    <label class="btn " id="nlayer2" onclick="order.setLayers(2)">
+                                        <input type="radio" id="numblayers2" autocomplete="off" /> 2
+                                    </label>
+                                    <label class="btn " id="nlayer3" onclick="order.setLayers(3)">
+                                        <input type="radio" id="numblayers3" autocomplete="off" /> 3
+                                    </label>
+                                    <label class="btn " id="nlayer4" onclick="order.setLayers(4)">
+                                        <input type="radio" id="numblayers4" autocomplete="off" /> 4
+                                    </label>
+                                    <label class="btn " id="nlayer5" onclick="order.setLayers(5)">
+                                        <input type="radio" id="numblayers5" autocomplete="off" /> 5
+                                    </label>
+                                    <label class="btn " id="nlayer6" onclick="order.setLayers(6)">
+                                        <input type="radio" id="numblayers5" autocomplete="off" /> 6
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="dimensiones">
+                                <div class="form-group" inputname="dimensiones">
+                                    <label>Dimensiones:
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label>
+                                        <input id="dimY" class="btn" type="text" name="largo" value="100" maxlength="5" onchange="order.setDimX(this.value)" style="width:100px "
+                                        />
+                                    </label>
+                                    <span>*</span>
+                                    <label>
+                                        <input id="dimX" class="btn" type="text" name="ancho" value="100" onchange="order.setDimY(this.value)" maxlength="5" style="width:100px"
+                                        />
+                                    </label>
+                                    <span>mm</span>
+                                </div>
+                            </div>
+                            <div class="form-group" inputname="quantity">
+                                <div class="quantity">
+                                    <label for="points">Cantidad:
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <input type="number" name="points" step="5" min="0 " value="10" onmouseup="order.setQuantity(this.value)" />
+                                </div>
+                            </div>
+                            <div class="grosor">
+                                <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="thickness">
+                                    <label>Grosor capa
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active " id="grosor0.6" onclick="order.setThickness(0.6)">
+                                        <input type="radio" autocomplete="off" /> 0.6mm
+                                    </label>
+                                    <label class="btn " id="grosor1" onclick="order.setThickness(1)">
+                                        <input type="radio" autocomplete="off" /> 1mm
+                                    </label>
+                                    <label class="btn " id="grosor1.6" onclick="order.setThickness(1.6)">
+                                        <input type="radio" autocomplete="off" /> 1.6mm
+                                    </label>
+                                    <label class="btn " id="grosor2" onclick="order.setThickness(2)">
+                                        <input type="radio" autocomplete="off" /> 2mm
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="color">
+                                <div class="formgroup btn-group-toggle " data-toggle="buttons" divname="adorn-color-pcb-div" inputname="adornColor">
+                                    <label>Color PCB
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active" id="colorCapaVerde" onclick="order.setColor('Verde')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:green"> ◉ </b>
+                                        </i>Verde
+                                    </label>
+                                    <label class="btn" id="colorCapaRojo" onclick="order.setColor('Rojo')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:red"> ◉ </b>
+                                        </i>Rojo
+                                    </label>
+                                    <label class="btn" id="colorCapaAmarillo" onclick="order.setColor('Amarillo')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:yellow"> ◉ </b>
+                                        </i>Amarillo
+                                    </label>
+                                    <label class="btn" id="colorCapaAzul" onclick="order.setColor('Azul')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:blue"> ◉ </b>
+                                        </i>Azul
+                                    </label>
+                                    <label class="btn " id="colorCapaBlanco" onclick="order.setColor('Blanco')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:rgb(240, 240, 240)"> ◉ </b>
+                                        </i>Blanco
+                                    </label>
+                                    <label class="btn" id="colorCapaNegro" onclick="order.setColor('Negro')">
+                                        <input type="radio" autocomplete="off" />
+                                        <i>
+                                            <b style="color:black"> ◉ </b>
+                                        </i>Negro
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="terminacion">
+                                <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="termination">
+                                    <label>Acabado superficial
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active" id="superficie1" onclick="order.setSurface(1)">
+                                        <input type="radio" autocomplete="off" /> HALS(c/plomo)
+                                    </label>
+                                    <label class="btn " id="superficie2" onclick="order.setSurface(2)">
+                                        <input type="radio" autocomplete="off" /> HASL-RoHS(s/plomo)
+                                    </label>
+                                    <label class="btn " id="superficie3" onclick="order.setSurface(3)">
+                                        <input type="radio" autocomplete="off" /> ENIG-RoHS
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="solder-mask">
+
+                            </div>
+                            <div class="oz-Cu">
+                                <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="ozCu">
+                                    <label>Onzas de Cobre
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active" id="ozlayer1" onclick="order.setOz(1)">
+                                        <input type="radio" autocomplete="off" /> 1oz
+                                    </label>
+                                    <label class="btn " id="ozlayer2" onclick="order.setOz(2)">
+                                        <input type="radio" autocomplete="off" /> 2oz
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="min-drill-size">
+                                <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="drillsize">
+                                    <label>Tamaño minimo de agujeros
+                                        <a href="/someSite.com">
+                                            <span class="glyphicon glyphicon-question-sign" />
+                                        </a>:
+                                    </label>
+                                    <label class="btn active" id="diametro0.2" onclick="order.setDiameter(0.2)">
+                                        <input type="radio" autocomplete="off" /> 0.2mm
+                                    </label>
+                                    <label class="btn " id="diametro0.25" onclick="order.setDiameter(0.25)">
+                                        <input type="radio" autocomplete="off" />0.25mm
+                                    </label>
+                                    <label class="btn " id="diametro0.3" onclick="order.setDiameter(0.3)">
+                                        <input type="radio" autocomplete="off" /> 0.3mm
+                                    </label>
+                                    <label class="btn " id="diametro0.4" onclick="order.setDiameter(0.4)">
+                                        <input type="radio" autocomplete="off" /> 0.4mm
+                                    </label>
+                                    <label class="btn " id="diametro0.5" onclick="order.setDiameter(0.5)">
+                                        <input type="radio" autocomplete="off" /> 0.5mm
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="trace-spacing">
+
+                            </div>
+                            <div class="holes" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-4 sidenav">
+                    <div class="well" style="background-color:white;text-align-last:left">
+                        <div>
+                            <h2>Detalle pedido:</h2>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row conten">
+                                <div class="col-sm-6">
+                                    <ul class="description">
+                                        <li>Capas:
+                                        </li>
+                                        <li>Dimensiones:</li>
+                                        <li>Cantidad:
+                                        </li>
+                                        <li>Grosor capas:
+                                        </li>
+                                        <li>Color PCB:
+                                        </li>
+                                        <li>Acabado superficial:
+                                        </li>
+                                        <li>Onzas de Cobre :
+                                        </li>
+                                        <li>Tamaño min de agujeros: </li>
+                                        <li>
+                                            <h3>
+                                                <b>Total:</b>
+                                            </h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="description" style="list-style-type : none; text-align: left">
+                                        <li>
+                                            <span id="Tcapa" />
+                                        </li>
+                                        <li>
+                                            <span id="TDimY" />mm*
+                                            <span id="TDimX" />mm</li>
+                                        <li>
+                                            <span id="Tcantidad" />
+                                        </li>
+                                        <li>
+                                            <span id="Tgrosor" />mm
+                                        </li>
+                                        <li>
+                                            <span id="Tcolor" />
+                                        </li>
+                                        <li>
+                                            <span id="Tsuperficie" />
+                                        </li>
+                                        <li>
+                                            <span id="Toz" />oz
+                                        </li>
+                                        <li>
+                                            <span id="Tdiametro" />mm
+                                        </li>
+                                        <li>
+                                            <h3>
+                                                <b>
+                                                    $
+                                                    <span id="Total" />
+                                                </b>
+                                            </h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            initialize();
+        </script>
+    </t>
+</t>
