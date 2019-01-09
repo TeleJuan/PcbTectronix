@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1">
+    <title>Fusion GerberView</title>
+    <meta name="keywords" content="Fusion PCB, PCB Assembly, Stencil，Flexible PCB">
+    <meta name="description" content="Fusion offers one stop prototyping services(Fusion PCB, PCB Assembly, Stencil, Flexible PCB) to build electronic and mechanical parts in small quantity.">
+    <link rel="shortcut icon" href="//statics3.seeedstudio.com/assets/img/common/favicon.ico">
+    <link rel="stylesheet" href="../css/lib/public.css?v=3d2c6d3">
+    <link rel="stylesheet" href="../fonts/font-awesome-4.5.0/css/font-awesome.min.css?v=4fbd15c">
+    <link rel="stylesheet" href="../css/main.css?v=a2a2ce5">
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TCF4N6" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>!function (e, t, a, n, g) { e[n] = e[n] || [], e[n].push({ "gtm.start": (new Date).getTime(), event: "gtm.js" }); var m = t.getElementsByTagName(a)[0], r = t.createElement(a); r.async = !0, r.src = "//www.googletagmanager.com/gtm.js?id=GTM-TCF4N6", m.parentNode.insertBefore(r, m) }(window, document, "script", "dataLayer")</script>
+    <style>
+        .gerber-box {
+            overflow: hidden
+        }
+
+        #gerber-layer {
+            display: none;
+            margin: 20px 0
+        }
+
+        .mask-bar {
+            background: #f7f7f7;
+            color: #444;
+            border: 1px solid rgba(0, 0, 0, .1);
+            border-bottom-color: rgba(0, 0, 0, .3);
+            border-radius: 4px;
+            background-origin: border-box;
+            background-image: -webkit-linear-gradient(top, #fff, #eee);
+            background-image: linear-gradient(to bottom, #fff, #eee)
+        }
+
+        .mask-layer-1 {
+            top: 20px;
+            right: 0;
+            width: 480px;
+            height: 40px;
+            border-radius: 0 4px 4px 0;
+            border-left: none
+        }
+
+        .uk-navbar {
+            background-color: #000
+        }
+
+        .loading-block {
+            height: 500px;
+            box-sizing: border-box;
+            padding-top: 100px
+        }
+
+        .loading-gif {
+            width: 100px
+        }
+
+        .gerber-banner {
+            width: 100%;
+            height: 155px;
+            background: url(http://statics3.seeedstudio.com/assets/img/bazaar/gerber_banner.jpg) center no-repeat;
+            text-indent: -1000em
+        }
+
+        .nav-text {
+            z-index: 5;
+            color: #444;
+            font-size: 14px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+        }
+
+        .help-link {
+            right: 378px;
+            top: 29px
+        }
+
+        .old-gerber-link {
+            top: 29px;
+            right: 246px
+        }
+    </style>
+</head>
+
+<body id="j-fusion" class="fusion-gallery-lib" style="display:none">
+    <section class="gerber-banner">
+        <div class="c-width center rel">
+            <a href="https://www.seeedstudio.io" title="SeeedStudio" class="seeed-link abs">SeeedStudio</a>
+        </div>
+    </section>
+    <div class="com-width center tc loading-block">
+        <img src="http://statics3.seeedstudio.com/assets/img/common/seeedloading.gif" alt="" class="loading-gif center">
+        <div class="mt20 c-3c">Loading data, just a moment</div>
+    </div>
+    <section class="com-width center gerber-box rel">
+        <a href="#" class="fr nav-text help-link abs" id="j-concat-us">Need help?</a>
+        <a href="#" class="fr nav-text old-gerber-link abs" target="_blank">Old GerberViewer</a>
+        <div class="mask-bar mask-layer-1 abs"></div>
+        <iframe src="" frameborder="no" width="1440" height="640" id="gerber-layer"></iframe>
+    </section>
+    <footer class="footer" id="footer"></footer>
+    <script src="../js/lib/jquery-1.11.3.min.js?v=895323e"></script>
+    <script src="../js/lib/public_module.js?v=4e58b60"></script>
+    <script src="../js/base_module.js?v=f037b37"></script>
+    <script>$(function () { var e = getQuery("sn"); console.log(e), "" != e && null != e || (window.location.href = "fusion_pcb.html"), $("body").show(); var o = $("#gerber-layer"); o.attr("src", "https://gerber-viewer.easyeda.com/showcase/#!id=" + e), $(".old-gerber-link").attr("href", "https://www.seeedstudio.io/old-gerber-view.html?sn=" + e), setTimeout(function () { $(".loading-block").hide(), o.fadeIn(100) }, 5e3) })</script>
+    <script>UserVoice = window.UserVoice || [], function () { var e = document.createElement("script"); e.type = "text/javascript", e.async = !0, e.src = "//widget.uservoice.com/nORfI8dR8KHiLECiDYNUWQ.js"; var r = document.getElementsByTagName("script")[0]; r.parentNode.insertBefore(e, r) }(), UserVoice.push(["set", { accent_color: "#6aba2e", trigger_color: "white", trigger_background_color: "rgba(46, 49, 51, 0.6)" }]), UserVoice.push(["identify", {}]), UserVoice.push(["addTrigger", "#j-concat-us", { mode: "contact", trigger_position: "bottom-right" }]), UserVoice.push(["autoprompt", {}])</script>
+</body>
+
+</html>

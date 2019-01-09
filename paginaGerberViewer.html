@@ -61,18 +61,31 @@
                 <div class="upload-box">
                     <h3>Choose the local(s) zip file(s)</h3>
                     <p class="note">Note : your browser will process the zip file, don't choose a file too big !</p>
-                    <input type="file" id="file" name="file" multiple />
-                    <br />
+                    <input type="file" id="file" name="file" />
+                    <br/>
 
                     <div id="result_block" class="hidden">
                         <h3>Content :</h3>
-                        <div id="result"></div>
+                        <div id="result" />
                     </div>
                 </div>
                 <div>
                     <span>
-                        <hr>
+                        <hr/>
                     </span>
+                </div>
+                <div id="lecture_zip" class="hidden">
+                    <div>
+                        <div id="lecture_zip_result"></div>
+                    </div>
+                    <div>
+                        <span>
+                            <hr/>
+                        </span>
+                    </div>
+                </div>
+                <div class="hidden">
+
                 </div>
                 <form id="caracteristicas" method="POST">
                     <div class="form-content">
@@ -80,26 +93,26 @@
                             <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="capas">
                                 <label>Capas
                                     <a href="/someSite.com">
-                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                        <span class="glyphicon glyphicon-question-sign" />
                                     </a>:
                                 </label>
                                 <label class="btn active" id="nlayer1" onclick="order.setLayers(1)">
-                                    <input type="radio" id="numblayers1" autocomplete="off" checked> 1
+                                    <input type="radio" id="numblayers1" autocomplete="off" /> 1
                                 </label>
                                 <label class="btn " id="nlayer2" onclick="order.setLayers(2)">
-                                    <input type="radio" id="numblayers2" autocomplete="off"> 2
+                                    <input type="radio" id="numblayers2" autocomplete="off" /> 2
                                 </label>
                                 <label class="btn " id="nlayer3" onclick="order.setLayers(3)">
-                                    <input type="radio" id="numblayers3" autocomplete="off"> 3
+                                    <input type="radio" id="numblayers3" autocomplete="off" /> 3
                                 </label>
                                 <label class="btn " id="nlayer4" onclick="order.setLayers(4)">
-                                    <input type="radio" id="numblayers4" autocomplete="off"> 4
+                                    <input type="radio" id="numblayers4" autocomplete="off" /> 4
                                 </label>
                                 <label class="btn " id="nlayer5" onclick="order.setLayers(5)">
-                                    <input type="radio" id="numblayers5" autocomplete="off"> 5
+                                    <input type="radio" id="numblayers5" autocomplete="off" /> 5
                                 </label>
                                 <label class="btn " id="nlayer6" onclick="order.setLayers(6)">
-                                    <input type="radio" id="numblayers5" autocomplete="off"> 6
+                                    <input type="radio" id="numblayers5" autocomplete="off" /> 6
                                 </label>
                             </div>
                         </div>
@@ -107,15 +120,17 @@
                             <div class="form-group" inputname="dimensiones">
                                 <label>Dimensiones:
                                     <a href="/someSite.com">
-                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                        <span class="glyphicon glyphicon-question-sign" />
                                     </a>:
                                 </label>
                                 <label>
-                                    <input id="dimY" class="btn" type="text" name="largo" value="100" maxlength="5" onchange="order.setDimX(this.value)" style="width:100px ">
+                                    <input id="dimY" class="btn" type="text" name="largo" value="100" maxlength="5" onchange="order.setDimX(this.value)" style="width:100px "
+                                    />
                                 </label>
                                 <span>*</span>
                                 <label>
-                                    <input id="dimX" class="btn" type="text" name="ancho" value="100" onchange="order.setDimY(this.value)" maxlength="5" style="width:100px">
+                                    <input id="dimX" class="btn" type="text" name="ancho" value="100" onchange="order.setDimY(this.value)" maxlength="5" style="width:100px"
+                                    />
                                 </label>
                                 <span>mm</span>
                             </div>
@@ -124,10 +139,10 @@
                             <div class="quantity">
                                 <label for="points">Cantidad:
                                     <a href="/someSite.com">
-                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                        <span class="glyphicon glyphicon-question-sign" />
                                     </a>:
                                 </label>
-                                <input type="number" name="points" step="5" min="0 " value="10" onmouseup="order.setQuantity(this.value)">
+                                <input type="number" name="points" step="5" min="0 " value="10" onmouseup="order.setQuantity(this.value)" />
                             </div>
                         </div>
                         <div class="grosor">
@@ -138,16 +153,16 @@
                                     </a>:
                                 </label>
                                 <label class="btn active " id="grosor0.6" onclick="order.setThickness(0.6)">
-                                    <input type="radio" autocomplete="off" checked> 0.6mm
+                                    <input type="radio" autocomplete="off" /> 0.6mm
                                 </label>
                                 <label class="btn " id="grosor1" onclick="order.setThickness(1)">
-                                    <input type="radio" autocomplete="off"> 1mm
+                                    <input type="radio" autocomplete="off" /> 1mm
                                 </label>
                                 <label class="btn " id="grosor1.6" onclick="order.setThickness(1.6)">
-                                    <input type="radio" autocomplete="off"> 1.6mm
+                                    <input type="radio" autocomplete="off" /> 1.6mm
                                 </label>
                                 <label class="btn " id="grosor2" onclick="order.setThickness(2)">
-                                    <input type="radio" autocomplete="off"> 2mm
+                                    <input type="radio" autocomplete="off" /> 2mm
                                 </label>
                             </div>
                         </div>
@@ -159,39 +174,39 @@
                                     </a>:
                                 </label>
                                 <label class="btn active" id="colorCapaVerde" onclick="order.setColor('Verde')">
-                                    <input type="radio" autocomplete="off" checked>
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:green"> &#9673 </b>
+                                        <b style="color:green"> ◉ </b>
                                     </i>Verde
                                 </label>
                                 <label class="btn" id="colorCapaRojo" onclick="order.setColor('Rojo')">
-                                    <input type="radio" autocomplete="off">
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:red"> &#9673 </b>
+                                        <b style="color:red"> ◉ </b>
                                     </i>Rojo
                                 </label>
                                 <label class="btn" id="colorCapaAmarillo" onclick="order.setColor('Amarillo')">
-                                    <input type="radio" autocomplete="off">
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:yellow"> &#9673 </b>
+                                        <b style="color:yellow"> ◉ </b>
                                     </i>Amarillo
                                 </label>
                                 <label class="btn" id="colorCapaAzul" onclick="order.setColor('Azul')">
-                                    <input type="radio" autocomplete="off">
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:blue"> &#9673 </b>
+                                        <b style="color:blue"> ◉ </b>
                                     </i>Azul
                                 </label>
                                 <label class="btn " id="colorCapaBlanco" onclick="order.setColor('Blanco')">
-                                    <input type="radio" autocomplete="off">
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:rgb(240, 240, 240)"> &#9673 </b>
+                                        <b style="color:rgb(240, 240, 240)"> ◉ </b>
                                     </i>Blanco
                                 </label>
                                 <label class="btn" id="colorCapaNegro" onclick="order.setColor('Negro')">
-                                    <input type="radio" autocomplete="off">
+                                    <input type="radio" autocomplete="off" />
                                     <i>
-                                        <b style="color:black"> &#9673 </b>
+                                        <b style="color:black"> ◉ </b>
                                     </i>Negro
                                 </label>
                             </div>
@@ -204,13 +219,13 @@
                                     </a>:
                                 </label>
                                 <label class="btn active" id="superficie1" onclick="order.setSurface(1)">
-                                    <input type="radio" autocomplete="off" checked> HALS(c/plomo)
+                                    <input type="radio" autocomplete="off" /> HALS(c/plomo)
                                 </label>
-                                <label class="btn " id="superficie2" superficie onclick="order.setSurface(2)">
-                                    <input type="radio" autocomplete="off"> HASL-RoHS(s/plomo)
+                                <label class="btn " id="superficie2" onclick="order.setSurface(2)">
+                                    <input type="radio" autocomplete="off" /> HASL-RoHS(s/plomo)
                                 </label>
                                 <label class="btn " id="superficie3" onclick="order.setSurface(3)">
-                                    <input type="radio" autocomplete="off"> ENIG-RoHS
+                                    <input type="radio" autocomplete="off" /> ENIG-RoHS
                                 </label>
                             </div>
                         </div>
@@ -221,14 +236,14 @@
                             <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="ozCu">
                                 <label>Onzas de Cobre
                                     <a href="/someSite.com">
-                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                        <span class="glyphicon glyphicon-question-sign" />
                                     </a>:
                                 </label>
                                 <label class="btn active" id="ozlayer1" onclick="order.setOz(1)">
-                                    <input type="radio" autocomplete="off" checked> 1oz
+                                    <input type="radio" autocomplete="off" /> 1oz
                                 </label>
                                 <label class="btn " id="ozlayer2" onclick="order.setOz(2)">
-                                    <input type="radio" autocomplete="off"> 2oz
+                                    <input type="radio" autocomplete="off" /> 2oz
                                 </label>
                             </div>
                         </div>
@@ -236,119 +251,121 @@
                             <div class="form-group btn-group-toggle " data-toggle="buttons" inputname="drillsize">
                                 <label>Tamaño minimo de agujeros
                                     <a href="/someSite.com">
-                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                        <span class="glyphicon glyphicon-question-sign" />
                                     </a>:
                                 </label>
                                 <label class="btn active" id="diametro0.2" onclick="order.setDiameter(0.2)">
-                                    <input type="radio" autocomplete="off" checked> 0.2mm
+                                    <input type="radio" autocomplete="off" /> 0.2mm
                                 </label>
                                 <label class="btn " id="diametro0.25" onclick="order.setDiameter(0.25)">
-                                    <input type="radio" autocomplete="off">0.25mm
+                                    <input type="radio" autocomplete="off" />0.25mm
                                 </label>
                                 <label class="btn " id="diametro0.3" onclick="order.setDiameter(0.3)">
-                                    <input type="radio" autocomplete="off"> 0.3mm
+                                    <input type="radio" autocomplete="off" /> 0.3mm
                                 </label>
                                 <label class="btn " id="diametro0.4" onclick="order.setDiameter(0.4)">
-                                    <input type="radio" autocomplete="off"> 0.4mm
+                                    <input type="radio" autocomplete="off" /> 0.4mm
                                 </label>
                                 <label class="btn " id="diametro0.5" onclick="order.setDiameter(0.5)">
-                                    <input type="radio" autocomplete="off"> 0.5mm
+                                    <input type="radio" autocomplete="off" /> 0.5mm
                                 </label>
 
                             </div>
                         </div>
-                        <div class="trace-spacing">
-
-                        </div>
+                        <div class="trace-spacing"></div>
                         <div class="holes"></div>
                     </div>
                 </form>
             </div>
-            <div class="col-sm-4 sidenav">
-                <div class="well" style="background-color:white;text-align-last:left">
-                    <div>
-                        <h2>Detalle pedido:</h2>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="row conten">
-                            <div class="col-sm-6">
-                                <ul class="description">
-                                    <li>Capas:
-                                    </li>
-                                    <li>Dimensiones:</li>
-                                    <li>Cantidad:
-                                    </li>
-                                    <li>Grosor capas:
-                                    </li>
-                                    <li>Color PCB:
-                                    </li>
-                                    <li>Acabado superficial:
-                                    </li>
-                                    <li>Onzas de Cobre :
-                                    </li>
-                                    <li>Tamaño min de agujeros: </li>
-                                    <li>
-                                        <h3>
-                                            <b>Total:</b>
-                                        </h3>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="description" style="list-style-type : none; text-align: left">
-                                    <li>
-                                        <span id="Tcapa"></span>
-                                    </li>
-                                    <li>
-                                        <span id="TDimY"></span>mm*
-                                        <span id="TDimX"></span>mm</li>
-                                    <li>
-                                        <span id="Tcantidad"></span>
-                                    </li>
-                                    <li>
-                                        <span id="Tgrosor"></span>mm
-                                    </li>
-                                    <li>
-                                        <span id="Tcolor"></span>
-                                    </li>
-                                    <li>
-                                        <span id="Tsuperficie"></span>
-                                    </li>
-                                    <li>
-                                        <span id="Toz"></span>oz
-                                    </li>
-                                    <li>
-                                        <span id="Tdiametro"></span>mm
-                                    </li>
-                                    <li>
-                                        <h3>
-                                            <b>
-                                                $
-                                                <span id="Total"></span>
-                                            </b>
-                                        </h3>
-                                    </li>
-                                </ul>
-                            </div>
+        </div>
+        <div class="col-sm-4 sidenav">
+            <div class="well" style="background-color:white;text-align-last:left">
+                <div>
+                    <h2>Detalle pedido:</h2>
+                </div>
+                <div class="container-fluid">
+                    <div class="row conten">
+                        <div class="col-sm-6">
+                            <ul class="description">
+                                <li>Capas:
+                                </li>
+                                <li>Dimensiones:</li>
+                                <li>Cantidad:
+                                </li>
+                                <li>Grosor capas:
+                                </li>
+                                <li>Color PCB:
+                                </li>
+                                <li>Acabado superficial:
+                                </li>
+                                <li>Onzas de Cobre :
+                                </li>
+                                <li>Tamaño min de agujeros: </li>
+                                <li>
+                                    <h3>
+                                        <b>Total:</b>
+                                    </h3>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="description" style="list-style-type : none; text-align: left">
+                                <li>
+                                    <span id="Tcapa"></span>
+                                </li>
+                                <li>
+                                    <span id="TDimY"></span>mm*
+                                    <span id="TDimX"></span>mm</li>
+                                <li>
+                                    <span id="Tcantidad"></span>
+                                </li>
+                                <li>
+                                    <span id="Tgrosor"></span>mm
+                                </li>
+                                <li>
+                                    <span id="Tcolor"></span>
+                                </li>
+                                <li>
+                                    <span id="Tsuperficie"></span>
+                                </li>
+                                <li>
+                                    <span id="Toz"></span>oz
+                                </li>
+                                <li>
+                                    <span id="Tdiametro"></span>mm
+                                </li>
+                                <li>
+                                    <h3>
+                                        <b>
+                                            $
+                                            <span id="Total"></span>
+                                        </b>
+                                    </h3>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
+
     <footer class="container-fluid text-center">
         <p>Footer Text</p>
     </footer>
     <script src="js/order.js"></script>
+    <script src="js/viewer.js"></script>
+    <script src="js/prototipoViewer.js"></script>
     <script>initialize()</script>
     <script>
         var $result = $("#result");
         $("#file").on("change", function (evt) {
             // remove content
             $result.html("");
-            // be sure to show the results
-            $("#result_block").removeClass("hidden").addClass("show");
-
+            // Esto muestra lo que tiene el archivo
+            //$("#result_block").removeClass("hidden").addClass("show");
+            $("#lecture_zip").removeClass("hidden").addClass("show");
             // Closure to capture the file information.
             function handleFile(f) {
                 var $title = $("<h4>", {
@@ -357,7 +374,6 @@
                 var $fileContent = $("<ul>");
                 $result.append($title);
                 $result.append($fileContent);
-
                 var dateBefore = new Date();
                 var flag = true;
                 JSZip.loadAsync(f)                                   // 1) read the Blob
@@ -367,86 +383,50 @@
                             "class": "small",
                             text: " (loaded in " + (dateAfter - dateBefore) + "ms)"
                         }));
-                        var capas = 0;
-                        var minX = 10000000000;
-                        var maxX = -10000000000;
-                        var minY = 10000000000;
-                        var maxY = -10000000000;
-                        var minDiametro = 10000;
-                        var dimX = 0;
-                        var dimY = 0;
-                        order.setLayers(0);
+
+                        var promises = []
                         zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
-                            //console.log(zipEntry);
-                            zip.files[zipEntry.name].async("string")
-                                .then(function (data, dimX, dimY) {
-                                    var lineas = data.split("\n");
-                                    //AQUI SE DEBERIA DETERMINAR SI ES DRILL
-                                    var tipo = "not drill";//drill o no
-                                    var comprobacion = "";
-                                    for (i = 0; i < 3; i++) {
-                                        comprobacion += lineas[0][i];
-                                    }
-                                    if (comprobacion == "M48") tipo = "drill";
-                                    //SI ES DRILL
-                                    if (tipo == "not drill") {
-                                        var lineaInteres = lineas[4].split(" ");
-                                        var descripcion = lineaInteres[2].split(",")
-                                        if (descripcion[1] == "Copper") {
-                                            order.addLayers();
-                                            //console.log("capas"+capas);
+                            promises.push(
+                                zip.files[zipEntry.name].async("string")
+                                    .then(function (data) {
+                                        var datosfaltantes = wG.guessLayer(zipEntry.name);
+                                        prototipo.addArchivo(zipEntry.name, data, datosfaltantes[0], datosfaltantes[1]);
+                                        return data;
+                                    }));
 
-                                        }
-                                        else if (descripcion[1] == "Profile") {
-                                            for (j = 0; j < lineas.length; j++) {
-                                                if (lineas[j][0] == "X") {
-                                                    var punto = lineas[j].substr(1).slice(0, -4).split("Y");
-                                                    var x = parseInt(punto[0], 10) / Math.pow(10, 6);
-                                                    var y = parseInt(punto[1], 10) / Math.pow(10, 6);
-                                                    if (x < minX) minX = x;
-                                                    else if (x > maxX) maxX = x;
-                                                    if (y < minY) minY = y;
-                                                    else if (y > maxY) maxY = y;
-
-                                                }
-                                            }
-                                            dimX = Math.abs(maxX - minX);
-                                            dimY = Math.abs(maxY - minY);
-                                            order.setDims(dimX, dimY);
-                                            console.log("dimensiones: " + dimY + "*" + dimX);
-                                        }
-                                    }
-                                    else if (tipo == "drill") {
-                                        length
-                                        for (j = 0; j < lineas.length; j++) {
-                                            var metr_diam = lineas[j].split("C");
-                                            if (lineas[j][0] == "T" && metr_diam.length == 2) {
-                                                var diametro = parseFloat(metr_diam[1]);
-                                                if (diametro < minDiametro) minDiametro = diametro;
-                                            }
-                                        }
-                                        order.changeHole(minDiametro);
-                                        console.log("diametro minimo: " + minDiametro)
-                                    }
-                                });
                             $fileContent.append($("<li>", {
                                 text: zipEntry.name
 
                             }));
                         });
-                    }, function (e) {
-                        $result.append($("<div>", {
-                            "class": "alert alert-danger",
-                            text: "Error reading " + f.name + ": " + e.message
-                        }));
+                        var promesas = Promise.all(promises).then(function () {
+                            return promises;
+                        });
+                        return promesas;
+                    },
+                        function (e) {
+                            $result.append($("<div>", {
+                                "class": "alert alert-danger",
+                                text: "Error reading " + f.name + ": " + e.message
+                            }));
+                        })
+                    //aqui  se cargaron los archivos, promesas no sirve para nada, 
+                    //se utiliza para que todos los datos se pasen correctamente a order.js
+                    .then(function (promesas) {
+                        print(prototipo.Archivos);
+                        order.setLayers(0);
+                        for (i = 0; i < prototipo.Archivos.length; i++) {
+                            procesarTexto(prototipo.Archivos[i][1]);
+                        }
                     });
+
             }
 
-            //console.log("diametro minimo: " + minDiametro);
             var files = evt.target.files;
             for (var i = 0; i < files.length; i++) {
                 handleFile(files[i]);
             }
+
         });
 
     </script>

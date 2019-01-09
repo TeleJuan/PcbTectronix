@@ -1,3 +1,7 @@
+function print(algo) {
+    console.log(algo);
+}
+
 var order = {
     layers: 1,
     dimension_x: 100,
@@ -18,7 +22,6 @@ var order = {
         initialize()
     },
     changeHole: function (newhole) {
-        console.log(newhole);
         if (newhole < this.aux_hole && this.holes.includes(newhole)) {
             document.getElementById("diametro" + this.hole_diameter).classList.remove("active");
             this.setDiameter(newhole);
@@ -80,7 +83,7 @@ var order = {
         }
         this.surface = string;
         this.numsurface = termination;
-        document.getElementById("superficie" + this.numsurface).classList.add("active");        
+        document.getElementById("superficie" + this.numsurface).classList.add("active");
         initialize();
     },
     setOz: function (ounces) {
@@ -113,3 +116,60 @@ function initialize() {
     document.getElementById("Tdiametro").innerHTML = order.hole_diameter;
     document.getElementById("Total").innerHTML = order.calculateTotal();
 }
+
+var capas = 0;
+var minX = 10000000000;
+var maxX = -10000000000;
+var minY = 10000000000;
+var maxY = -10000000000;
+var minDiametro = 10000;
+var dimX = 0;
+var dimY = 0;
+
+function procesarTexto(f) {
+    var lineas = f.split("\n");
+    //AQUI SE DEBERIA DETERMINAR SI ES DRILL
+    var tipo = "not drill";//drill o no
+    var comprobacion = "";
+    for (i = 0; i < 3; i++) {
+        comprobacion += lineas[0][i];
+    }
+    if (comprobacion == "M48") tipo = "drill";
+    //SI ES DRILL
+    if (tipo == "not drill") {
+        var lineaInteres = lineas[4].split(" ");
+        var descripcion = lineaInteres[2].split(",")
+        if (descripcion[1] == "Copper") {
+            order.addLayers();
+
+        }
+        else if (descripcion[1] == "Profile") {
+            for (j = 0; j < lineas.length; j++) {
+                if (lineas[j][0] == "X") {
+                    var punto = lineas[j].substr(1).slice(0, -4).split("Y");
+                    var x = parseInt(punto[0], 10) / Math.pow(10, 6);
+                    var y = parseInt(punto[1], 10) / Math.pow(10, 6);
+                    if (x < minX) minX = x;
+                    else if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    else if (y > maxY) maxY = y;
+
+                }
+            }
+            dimX = Math.abs(maxX - minX);
+            dimY = Math.abs(maxY - minY);
+            order.setDims(dimX, dimY);
+        }
+    }
+    else if (tipo == "drill") {
+        length
+        for (j = 0; j < lineas.length; j++) {
+            var metr_diam = lineas[j].split("C");
+            if (lineas[j][0] == "T" && metr_diam.length == 2) {
+                var diametro = parseFloat(metr_diam[1]);
+                if (diametro < minDiametro) minDiametro = diametro;
+            }
+        }
+        order.changeHole(minDiametro);
+    }
+};
