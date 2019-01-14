@@ -1,3 +1,4 @@
+console.log("esto cargo");
 var ulr = "https://cdn.jsdelivr.net/gh/telejuan/PcbTectronix/js/prototipoViewer.js";
 $.getScript( url, function( data, textStatus, jqxhr ) {
     console.log( data ); // Data returned
