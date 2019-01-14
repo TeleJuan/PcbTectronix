@@ -15,7 +15,11 @@ var order = {
     hole_diameter: 0.2,
     aux_hole: 10,
     holes: [0.2, 0.25, 0.3, 0.4, 0.5],
-
+    limits : [],
+    minX : 0,
+    maxX : 100,
+    minY : 0,
+    maxY : 100,
     addLayers: function () {
         this.layers += 1;
 
@@ -158,6 +162,10 @@ function procesarTexto(f) {
             }
             dimX = Math.abs(maxX - minX);
             dimY = Math.abs(maxY - minY);
+            order.minX = minX;
+            order.minY = minY;
+            order.maxX = maxX;
+            order.maxY = maxY;        
             order.setDims(dimX, dimY);
         }
     }

@@ -44,3 +44,8 @@
             background-color: red;
             color: red;
         }
+
+        #canvas-top-img , 
+        #canvas-bottom-img {
+            width: 100%
+        }

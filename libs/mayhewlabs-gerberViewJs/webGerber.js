@@ -292,7 +292,6 @@ wG.load = function load(text) {
                     continue;
                 }
                 var cmode = 0;
-                //print(d[0]);
                 if(d[0] == 'G' && d.length > 4) {
                     var r = /^\d*/.exec(d = d.slice(1)); // assert(r);
                     mode = (mode & 12) | (cmode = parseInt(r[0], 10));
@@ -711,7 +710,6 @@ function init(layers) {
         layers[i].enabled = true;
     }
     var w = limits.maxX-limits.minX, h = limits.maxY-limits.minY;
-    
     var renderer, has3D = true;
     try {
         renderer = new THREE.WebGLRenderer({antialias: true});
@@ -1009,7 +1007,6 @@ $(function() {
             //    continue;
             var fileSelect = layerSelect.clone(), guess = wG.guessLayer(files[i].name);
             if(guess){
-                print(guess);
                 fileSelect.val(guess.join(''));
             }
             step2.append('<br>', $('<strong>').text(files[i].name+'  '), fileSelect);
@@ -1039,7 +1036,6 @@ $(function() {
                 var f = filePairs[i], which = f[1].val();
                 if(!which)
                     continue;
-                
                 var reader = new FileReader();
                 reader.onload = function(ev) {
 //ev.target.result contiene el texto del archivo.
@@ -1055,10 +1051,10 @@ $(function() {
                         console.log(e.stack);
                         return;
                     }
-                    print(ev.target.text);
                     g.type = this[2];
                     g.side = this[1];
                     g.name = this[0];
+                    
 //G es un "objeto" que posee un arreglo:
 //  CMDS 
                     // Do we have all the layers?

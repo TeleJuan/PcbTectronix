@@ -84,7 +84,17 @@
                         </span>
                     </div>
                 </div>
-                <div class="hidden">
+                <div class="hidden" id='canvas-images'>
+                    <div class="row">
+                        <div class='col-sm-6' id='canvas-top'></div>
+                        <div class='col-sm-6' id='canvas-bottom'></div>
+                    </div>
+                    <div class="text-center" id='3D'></div>
+                    <div>
+                        <span>
+                            <hr/>
+                        </span>
+                    </div>
 
                 </div>
                 <form id="caracteristicas" method="POST">
@@ -284,7 +294,7 @@
                     <h2>Detalle pedido:</h2>
                 </div>
                 <div class="container-fluid">
-                    <div class="row conten">
+                    <div class="row " style="height: 100%;">
                         <div class="col-sm-6">
                             <ul class="description">
                                 <li>Capas:
@@ -365,7 +375,7 @@
             $result.html("");
             // Esto muestra lo que tiene el archivo
             //$("#result_block").removeClass("hidden").addClass("show");
-            $("#lecture_zip").removeClass("hidden").addClass("show");
+            //$("#lecture_zip").removeClass("hidden").addClass("show");
             // Closure to capture the file information.
             function handleFile(f) {
                 var $title = $("<h4>", {
@@ -391,6 +401,7 @@
                                     .then(function (data) {
                                         var datosfaltantes = wG.guessLayer(zipEntry.name);
                                         prototipo.addArchivo(zipEntry.name, data, datosfaltantes[0], datosfaltantes[1]);
+                                        prototipo.layers++;
                                         return data;
                                     }));
 
@@ -413,10 +424,54 @@
                     //aqui  se cargaron los archivos, promesas no sirve para nada, 
                     //se utiliza para que todos los datos se pasen correctamente a order.js
                     .then(function (promesas) {
-                        print(prototipo.Archivos);
                         order.setLayers(0);
+                        var layers = [];
+
                         for (i = 0; i < prototipo.Archivos.length; i++) {
                             procesarTexto(prototipo.Archivos[i][1]);
+                            var g = wG.load(prototipo.Archivos[i][1])
+                            g.type = prototipo.Archivos[i][3];
+                            g.side = prototipo.Archivos[i][2];
+                            g.name = prototipo.Archivos[i][0];
+
+                            if (layers.push(g) >= prototipo.Archivos.length) {
+                                //layers es un arreglo de "g"}
+                                var limits = {};
+                                var h;
+                                var w
+                                function draw(capa) {
+                                    limits.minX = order.minX;
+                                    limits.minY = order.minY;
+                                    limits.maxX = order.maxX;
+                                    limits.maxY = order.maxY;
+
+                                    w = (limits.maxX - limits.minX);
+                                    h = limits.maxY - limits.minY;
+                                    var bottom = wG.makeBoard(w, h, false, "Bottom");
+                                    var top = wG.makeBoard(w, h, true, "Top");
+                                    wG.clearBoard(bottom), wG.clearBoard(top)
+                                    capa.sort(function (a, b) {
+                                        return (a.type || 10) - (b.type || 10);
+                                    });
+                                    for (i = 0; i < capa.length; i++) {
+                                        if (capa[i].side & wG.BOTTOM)
+                                            wG.renderBoard(bottom, capa[i], limits);//, bottomTexture.needsUpdate = true;
+                                        if (capa[i].side & wG.TOP)
+                                            wG.renderBoard(top, capa[i], limits);
+                                    }
+                                    $('#canvas-images').removeClass("hidden");
+                                    $('#canvas-top').append(top);
+                                    $('#canvas-bottom').append(bottom);
+                                    var boton = $("<button>",{
+                                        text:"Ver en 3D",
+                                        style: "background-color: white",
+                                    });
+                                    $('#3D').append(boton).on("click",function(){
+                                        print("aqui es cuando se abre un popup");
+                                    });
+                                }
+                                draw(layers);
+                            }
                         }
                     });
 

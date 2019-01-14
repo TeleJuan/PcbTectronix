@@ -292,7 +292,6 @@ wG.load = function load(text) {
                     continue;
                 }
                 var cmode = 0;
-                //print(d[0]);
                 if(d[0] == 'G' && d.length > 4) {
                     var r = /^\d*/.exec(d = d.slice(1)); // assert(r);
                     mode = (mode & 12) | (cmode = parseInt(r[0], 10));
@@ -320,7 +319,7 @@ wG.load = function load(text) {
                 } else if(hasX && (x != prevX) || hasY && (y != prevY))
                     g.cmds.push([(mode<<2) | 1, shape, x, y, oi, oj]);
                 else
-                    console.log(d);
+                    //console.log(d);
                 prevX = x, prevY = y;
             }
         }
@@ -394,16 +393,16 @@ wG.renderLayer = function renderLayer(canvas, g, limits) {
                 else if(mode == 6 || mode == 7) { // Multi quadrant Circular Interpolation.
                     var ox = g.cmds[i][4], oy = g.cmds[i][5], cx = prevX+ox, cy = prevY+oy;
                     ctx.arc(cx, cy, Math.sqrt(ox*ox+oy*oy), Math.atan2(-oy, -ox), Math.atan2(y-cy, x-cx), mode == 6);
-                } else
-                    console.log(mode);
-            } else
-                console.log(mode, op);
+                } //else
+                   // console.log(mode);
+            } //else
+                //console.log(mode, op);
             prevX = x, prevY = y;
             continue;
         }
         var s = g.shapes[g.cmds[i][1]];
         if(!s) {
-            console.log(g.cmds[i], s);
+            //console.log(g.cmds[i], s);
             continue;
         }
         if(op != 2) {
@@ -471,7 +470,8 @@ wG.renderLayer = function renderLayer(canvas, g, limits) {
                     
                     //HACK Copper lines get some extra thickness.
                     if(g.type == wG.COPPER)
-                        ctx.lineWidth = Math.ceil(s[1]*scaleMax/3+.01)/scaleMax*3;
+                       // ctx.lineWidth = Math.ceil(s[1]*scaleMax/3+.01)/scaleMax*3;
+                       ctx.lineWidth =s[1];
                     else
                         ctx.lineWidth = s[1];
                     ctx.lineCap = 'round';
@@ -551,8 +551,8 @@ wG.renderBoard = function renderBoard(canvas, g, limits) {
     ctx.drawImage(g.canvas, 0, 0);
 };
 
-wG.ppmm = 40; // Pixels per mm.
-wG.maxTexSize = 4096, wG.minTexSize = 256; // Largest possible texture size.
+wG.ppmm = 2; // Pixels per mm.
+wG.maxTexSize = 4096, wG.minTexSize = 64; // Largest possible texture size.
 
 // Finds the closest power of two to the given size of a texture (needed for mipmapping).
 wG.texSize = function texSize(x) {
@@ -564,8 +564,10 @@ wG.texSize = function texSize(x) {
 };
 
 // Creates a 2D canvas that is a board side texture, for the given width and height.
-wG.makeBoard = function makeBoard(w, h, invertedY) {
+wG.makeBoard = function makeBoard(w, h, invertedY,side) {
     var canvas = document.createElement('canvas');
+    if(side=="Top")canvas.id = "canvas-top-img";
+    else if(side=="Bottom")canvas.id = "canvas-bottom-img";
     canvas.width = wG.texSize(w*wG.ppmm), canvas.height = wG.texSize(h*wG.ppmm);
     
     // Don't allow mipmapping for stretched textures.
@@ -575,7 +577,6 @@ wG.makeBoard = function makeBoard(w, h, invertedY) {
     else if(stretch < .25)
         canvas.height--;
     canvas.invertedY = invertedY;
-    
     return canvas;
 };
 
