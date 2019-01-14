@@ -1,3 +1,10 @@
+var ulr = "https://cdn.jsdelivr.net/gh/telejuan/PcbTectronix/js/prototipoViewer.js";
+$.getScript( url, function( data, textStatus, jqxhr ) {
+    console.log( data ); // Data returned
+    console.log( textStatus ); // Success
+    console.log( jqxhr.status ); // 200
+    console.log( "Load was performed." );
+  });
 var $result = $("#result");
 $("#file").on("change", function (evt) {
     // remove content
